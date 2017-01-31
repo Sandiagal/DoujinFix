@@ -26,12 +26,12 @@
 - 该功能只能处理在上述3个标准下的同人志。所以请不要使用该软件处理同人声音、动画的名称。
 ### 使用方法
 - 1、指定“源头目录路径”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/2.jpg) 
+ - ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/2.jpg) 
 - 该目录下应该存放多个文件夹，其名称需要符合上述3个标准下的同人志。
 - 2、指定“目标处理格式”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/3.jpg) 
+ - ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/3.jpg) 
 - 3、点击“名称标准化”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/4.jpg) 
+ - ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/4.jpg) 
 - 处理进度位于“名称标准化”按钮右侧，处理结果实时显示于下方文字区。
 - 品红色表示处理成功；黑色表示文件名已经标准，不用处理；橙色表示处理失败，失败信息将显示于下方；蓝色是处理开始于结束的标记，最下方将显示处理成功文件的个数。
 - 如果对处理结果不满意，可以点击“名称标准化”按钮右侧的“撤销”按钮。
