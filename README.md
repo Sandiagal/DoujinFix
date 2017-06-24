@@ -1,5 +1,5 @@
 # FileManagement
-该软件是一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
+一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
 
 ## 封面
 ![](https://github.com/Sandigle/FileManagement/raw/master/image/1.jpg) 
