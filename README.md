@@ -1,4 +1,4 @@
-# FileManagement
+# FileManagement ![License](https://img.shields.io/github/license/mashape/apistatus.svg)
 一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
 
 ## 封面
