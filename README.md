@@ -2,7 +2,7 @@
 一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
 
 ## 封面
-![](https://github.com/Sandigle/FileManagement/raw/master/image/1.jpg) 
+![](https://github.com/Sandigal/FileManagement/raw/master/image/1.jpg) 
 
 ## 简介
 该软件是一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
@@ -15,7 +15,7 @@
 
 如果想了解该软件的更多信息，或者报告Bug，可以联系编者。
 
-邮箱：492302909@qq.com
+邮箱：sandiagal2525@gmail.com
 
 ## 文件名标准化
 ### 内容介绍
@@ -40,15 +40,15 @@
 
 ### 使用方法
 - 1、指定“源头目录路径”
-- ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/2.jpg) 
+- ![slide](https://github.com/Sandigal/FileManagement/raw/master/image/2.jpg) 
   
 该目录下应该存放多个文件夹，其名称需要符合上述3个标准下的同人志。
 
 - 2、指定“目标处理格式”
-- ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/3.jpg) 
+- ![slide](https://github.com/Sandigal/FileManagement/raw/master/image/3.jpg) 
 
 - 3、点击“名称标准化”
-- ![slide](https://github.com/Sandigle/FileManagement/raw/master/image/4.jpg)
+- ![slide](https://github.com/Sandigal/FileManagement/raw/master/image/4.jpg)
  
 处理进度位于“名称标准化”按钮右侧，处理结果实时显示于下方文字区。
 
@@ -70,17 +70,17 @@
 ### 使用方法
 - 1、必须先经过“文件名标准化”和“图像处理”处理。
 - 2、指定“目标目录路径”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/5.jpg) 
+ - ![](https://github.com/Sandigal/FileManagement/raw/master/image/5.jpg) 
  
 “目标目录路径”为“图像压制”后图像存放的目录，该路径下内文件格式应当与源头目录路径下文件格式完全相同。
 
 - 3、设置“%阈值”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/6.jpg) 
+ - ![](https://github.com/Sandigal/FileManagement/raw/master/image/6.jpg) 
  
 当压制后的图片大小缩小了3%以上时，才认为“图像压制”的结果足够好，可以用于“文件替换”。
 
 - 4、点击“文件替换”
- - ![](https://github.com/Sandigle/FileManagement/raw/master/image/7.jpg) 
+ - ![](https://github.com/Sandigal/FileManagement/raw/master/image/7.jpg) 
  
 处理进度位于“文件替换”按钮右侧，第一栏是总体文件处理进度，第二栏是单一文件夹内处理进度；处理结果实时显示于下方文字区。
 
