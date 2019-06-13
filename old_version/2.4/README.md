@@ -4,7 +4,7 @@
 
 ## 封面
 
-![](https://github.com/Sandigal/FileManagement/raw/master/image/1.jpg) 
+![](https://raw.githubusercontent.com/Sandiagal/DoujinFix/master/%E6%97%A7%E7%89%88/2.4/image/1.jpg) 
 
 ## 简介
 
@@ -59,7 +59,7 @@
 - 3、点击“名称标准化”
 
   ![slide](https://github.com/Sandigal/FileManagement/raw/master/image/4.jpg)
- 
+
 处理进度位于“名称标准化”按钮右侧，处理结果实时显示于下方文字区。
 
 品红色表示处理成功；黑色表示文件名已经标准，不用处理；橙色表示处理失败，失败信息将显示于下方；蓝色是处理开始于结束的标记，最下方将显示处理成功文件的个数。
@@ -91,19 +91,19 @@
 - 2、指定“目标目录路径”
 
   ![](https://github.com/Sandigal/FileManagement/raw/master/image/5.jpg) 
- 
+
 “目标目录路径”为“图像压制”后图像存放的目录，该路径下内文件格式应当与源头目录路径下文件格式完全相同。
 
 - 3、设置“%阈值”
 
   ![](https://github.com/Sandigal/FileManagement/raw/master/image/6.jpg) 
- 
+
 当压制后的图片大小缩小了3%以上时，才认为“图像压制”的结果足够好，可以用于“文件替换”。
 
 - 4、点击“文件替换”
 
   ![](https://github.com/Sandigal/FileManagement/raw/master/image/7.jpg) 
- 
+
 处理进度位于“文件替换”按钮右侧，第一栏是总体文件处理进度，第二栏是单一文件夹内处理进度；处理结果实时显示于下方文字区。
 
 品红色表示处理成功；并在下方显示处理成功文件数和减少的体积；蓝色是处理开始于结束的标记，最下方将显示总处理成功文件的个数和减少的总体积。
