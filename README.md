@@ -1,4 +1,4 @@
-# FileManagement ![License](https://img.shields.io/github/license/mashape/apistatus.svg)
+# FileManagement [![codebeat badge](https://codebeat.co/badges/85771199-cd75-4e26-894b-93568967e7c8)](https://codebeat.co/projects/github-com-sandiagal-doujinfix-master)
 
 一款集合了同人志文件名标准化、图像压制和文件替换功能的便于批量整理同人志的软件。
 
