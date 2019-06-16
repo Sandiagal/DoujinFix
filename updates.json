@@ -1,0 +1,11 @@
+{
+  "updates": {
+    "windows": {
+      "open-url": "",
+      "latest-version": "3.0",
+      "download-url": "https://raw.githubusercontent.com/Sandiagal/DoujinFix/master/old_version/2.4/image/1.jpg",
+      "changelog": "This is an example changelog for Windows. Go on...",
+      "mandatory": true
+    }
+  }
+}
