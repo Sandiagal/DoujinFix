@@ -6,12 +6,17 @@
 #include <QTimer>
 #include <QStyleFactory>
 #include <QMessageBox>
+#include <QSimpleUpdater.h>
+
+//Define the URL of the Update Definitions file
+static const QString DEFS_URL = "https://raw.githubusercontent.com/Sandiagal/DoujinFix/master/updates.json";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle(QString("DoujinFix v%1 Present by Sandiagal").arg(APP_VERSION));
 
     //读取配置
     connect(setting, &Setting::writeLog, logModel, &LogListModel::WriteLog);
@@ -58,6 +63,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     emit writeLog(QString::fromLocal8Bit("初始化完毕"), LogType::OKLOG);
+
+    /* QSimpleUpdater is single-instance */
+    m_updater = QSimpleUpdater::getInstance();
+    connect(m_updater, &QSimpleUpdater::haveUpdate, this, &MainWindow::haveUpdate);
+    connect(m_updater, &QSimpleUpdater::quitNow, this, &MainWindow::updateQuit);
+    /* Apply the settings */
+    m_updater->setModuleVersion (DEFS_URL, APP_VERSION);
+    /* Check for updates */
+    m_updater->checkForUpdates (DEFS_URL);
 }
 
 MainWindow::~MainWindow()
@@ -254,7 +268,7 @@ void MainWindow::on_action_2_triggered()
     translatedTextAboutQtText = QString::fromLocal8Bit(
                 "<h2>信息和介绍</h2>"
                 "<p>名称：DoujinFix</p>"
-                "<p>版本：3.02</p>"
+                "<p>版本：%1</p>"
                 "<p>作者：Sandiagal</p>"
                 "<p>发布博客：<a href=\"https://www.sdyg.men/\">https://www.sdyg.men</a></p>"
                 "<p>项目主页：<a href=\"https://github.com/Sandiagal/FileManagement/\">FileManagement</a></p>"
@@ -268,14 +282,16 @@ void MainWindow::on_action_2_triggered()
                 "对此，为了能更方便的整理同人志，需要一款软件来解决上述问题。</p>"
                 "<h2>制作和感谢</h2>"
                 "<p>DoujinFix基于跨平台的 C++ 应用程式框架 <a href=\"https://www.qt.io/\">Qt</a> 开发，"
-                "并修改了拉斐尔之翼的配置管理，日志管理等模块用以定制软件。</p>"
-                "<p>感谢同窗的好友对 DoujinFix 的编写提供众多支持， 拉斐尔之翼，魂跃，Argh等。</p>"
+                "并修改了以下优秀的代码模块用以定制：</p>"
+                "<p>-配置管理，日志管理：原作者拉斐尔之翼的等模块用以定制软件；</p>"
+                "<p>-在线更新：原作者alex-spataru。</p>"
+                "<p>感谢 Github 里的好友对 DoujinFix 的编写提供众多支持，拉斐尔之翼，alex-spataru，魂跃，Argh等。</p>"
                 "<p>感谢所有使用和支持 DoujinFix 的网友。 </p>"
                 "<h2>声明和协议</h2>"
                 "<p>本软件遵从GNU LGPL v3开源协议，详情请看"
                 "<a href=\"https://www.gnu.org/licenses/lgpl-3.0.en.html\">GNU LESSER GENERAL PUBLIC LICENSE</a></p>"
                 "<p>本软件允许个人免费试用，但不得更改任何信息。网站转载或商业应用必须得到作者认可。</p>"
-                );
+                ).arg(APP_VERSION);
     QMessageBox *msgBox = new QMessageBox(this);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowTitle("关于 DoujinFix");
@@ -351,4 +367,21 @@ void MainWindow::on_spinBox_2_valueChanged(int arg1)
     setting->WIDTH_THRESHOLD=arg1;
 }
 
+//
+void MainWindow::on_action_5_triggered()
+{
+    m_updater->doUpdates(DEFS_URL);
+}
 
+void MainWindow::haveUpdate()
+{
+    ui->mainToolBar->addSeparator();
+    ui->mainToolBar->addAction(ui->action_5);
+    emit writeLog(QString::fromLocal8Bit("有新内容"), LogType::OKLOG);
+}
+
+void MainWindow::updateQuit()
+{
+    emit writeLog(QString::fromLocal8Bit("更新退出"), LogType::OKLOG);
+    QApplication::quit();
+}

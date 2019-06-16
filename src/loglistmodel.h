@@ -7,7 +7,7 @@
 
 namespace LogType
 {
-    enum LogTypeEnum {NORMALLOG=0,WARNINGLOG,ERRORLOG,OKLOG,IGNORELOG,NAMELOG,INDEXLOG};
+    enum LogTypeEnum {OKLOG,ERRORLOG,IGNORELOG,NAMELOG,INDEXLOG,REPLACELOG,WARNINGLOG};
 }
 
 class LogListModel : public QAbstractListModel
@@ -18,7 +18,7 @@ public:
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
-    enum LogTypeEnum {NORMALLOG=0,WARINGLOG,ERRORLOG,OKLOG,TIMERLOG,NETLOG,DEBUGLOG};
+//    enum LogTypeEnum {NORMALLOG=0,WARINGLOG,ERRORLOG,OKLOG,TIMERLOG,NETLOG,DEBUGLOG};
 
     void FlushLogFile(bool isExiting = false);
     QStringList logList;

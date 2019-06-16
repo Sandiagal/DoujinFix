@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DoujinFix v3.02 Present by Sandiagal</string>
+   <string/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -126,7 +126,7 @@
            <item>
             <widget class="QLabel" name="label_8">
              <property name="text">
-              <string>全速</string>
+              <string>极速运算</string>
              </property>
             </widget>
            </item>
@@ -136,7 +136,7 @@
               <enum>Qt::LeftToRight</enum>
              </property>
              <property name="text">
-              <string>流畅</string>
+              <string>流畅交互</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -583,6 +583,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionasd">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icon.qrc">
      <normaloff>:/ico/Archive manage.ico</normaloff>:/ico/Archive manage.ico</iconset>
@@ -592,6 +595,12 @@
    </property>
   </action>
   <action name="action">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icon.qrc">
      <normaloff>:/ico/Setting.ico</normaloff>:/ico/Setting.ico</iconset>
@@ -607,6 +616,9 @@
    </property>
   </action>
   <action name="action_4">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icon.qrc">
      <normaloff>:/ico/Finder.ico</normaloff>:/ico/Finder.ico</iconset>
@@ -631,6 +643,18 @@
    </property>
    <property name="text">
     <string>项目地址</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icon.qrc">
+     <normaloff>:/ico/iSync.ico</normaloff>:/ico/iSync.ico</iconset>
+   </property>
+   <property name="text">
+    <string>有新内容</string>
    </property>
   </action>
  </widget>

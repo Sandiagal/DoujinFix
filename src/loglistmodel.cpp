@@ -40,30 +40,29 @@ QVariant LogListModel::data(const QModelIndex &index, int role) const
         QPixmap icon(10,10);
         switch (logTypeList.at(index.row()))
         {
-        case LogType::NORMALLOG:
-            icon.fill(QColor(0,0,255,255));
-            break;
-        case LogType::IGNORELOG:
-            icon.fill(QColor(102,204,255,255));
-            break;
-        case LogType::NAMELOG:
-            icon.fill(QColor(0,0,255,255));
+        case LogType::OKLOG:
+            icon.fill(QColor(0,0,255));
             break;
         case LogType::ERRORLOG:
-            icon.fill(QColor(255,0,0,255));
+            icon.fill(QColor(255,0,0));
             break;
-        case LogType::OKLOG:
-            icon.fill(QColor(0,255,0,255));
+        case LogType::IGNORELOG:
+            icon.fill(QColor(192,192,192));
+            break;
+        case LogType::NAMELOG:
+            icon.fill(QColor(0,255,128));
             break;
         case LogType::INDEXLOG:
-            icon.fill(QColor(255,0,255,255));
+            icon.fill(QColor(192,0,255));
+            break;
+        case LogType::REPLACELOG:
+            icon.fill(QColor(0,192,128));
             break;
         case LogType::WARNINGLOG:
         default:
-            icon.fill(QColor(255,128,0,255));
+            icon.fill(QColor(255,128,0));
             break;
         }
-
 
         QVariant vTmp = icon;
         return vTmp;
@@ -79,8 +78,12 @@ void LogListModel::WriteLog(QString string, int type)
     beginInsertRows(QModelIndex(), tmpLen, tmpLen);
     switch (type)
     {
-    case LogType::NORMALLOG:
-        string.prepend(QString::fromLocal8Bit("[正常] "));
+
+    case LogType::OKLOG:
+        string.prepend(QString::fromLocal8Bit("[完成] "));
+        break;
+    case LogType::ERRORLOG:
+        string.prepend(QString::fromLocal8Bit("[错误] "));
         break;
     case LogType::IGNORELOG:
         string.prepend(QString::fromLocal8Bit("[忽略] "));
@@ -88,14 +91,11 @@ void LogListModel::WriteLog(QString string, int type)
     case LogType::NAMELOG:
         string.prepend(QString::fromLocal8Bit("[名称] "));
         break;
-    case LogType::ERRORLOG:
-        string.prepend(QString::fromLocal8Bit("[错误] "));
-        break;
-    case LogType::OKLOG:
-        string.prepend(QString::fromLocal8Bit("[完成] "));
-        break;
     case LogType::INDEXLOG:
         string.prepend(QString::fromLocal8Bit("[序号] "));
+        break;
+    case LogType::REPLACELOG:
+        string.prepend(QString::fromLocal8Bit("[替换] "));
         break;
     case LogType::WARNINGLOG:
     default:

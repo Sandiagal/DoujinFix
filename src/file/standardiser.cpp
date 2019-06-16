@@ -62,7 +62,7 @@ void Standardiser::start()
             successDir+=1;
 
         if (setting->INDEX_FIX) {
-            QStringList files=loadFiles(dirInfo.absoluteFilePath());
+            QStringList files=loadFiles(standardResult);
             int successCnt=fileStandard(files);
             successFileCnt+=successCnt;
             if(successCnt>0)
@@ -104,7 +104,7 @@ void Standardiser::revoke()
                     emit showMessage(targetFile.section("/",-2,-1));
                     try {
                         qDebug()<< targetFile << "----->" << originFile;
-                        //                    QFile::rename(targetFile, originFile);
+                        QFile::rename(targetFile, originFile);
                         successFileCnt++;
                     } catch (std::exception &e) {
                         qDebug()<<e.what();
@@ -124,7 +124,7 @@ void Standardiser::revoke()
             dirCnt++;
             emit showMessage(newDirs[i].section("/",-1));
             try {
-                //            QFile::rename(newDirs[i], originDirs[i]);
+                QFile::rename(newDirs[i], originDirs[i]);
                 successDirCnt++;
                 emit writeLog(QString::fromLocal8Bit("撤销成功\n%1     ---------->\n%2")
                               .arg(QFileInfo(newDirs[i]).fileName())
@@ -205,7 +205,7 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
         return dirInfo.absoluteFilePath();
     }else {
         try {
-            //            QFile::rename(dirInfo.absoluteFilePath(), resultPath);
+            QFile::rename(dirInfo.absoluteFilePath(), resultPath);
             newDirs.append(resultPath);
             qDebug()<<dirInfo.absoluteFilePath()<<"----->"<<resultPath;
             emit writeLog(QString::fromLocal8Bit("标准化成功\n%1     ---------->\n%2")
@@ -248,7 +248,7 @@ int Standardiser::fileStandard(const QStringList &files)
         if (targetFilePath!=originFile.absoluteFilePath()) {
             qDebug() << originFile.absoluteFilePath()<<"----->"<<targetFilePath;
             try {
-                //                QFile::rename(originFile.absoluteFilePath(), targetFilePath);
+                QFile::rename(originFile.absoluteFilePath(), targetFilePath);
                 compressCnt++;
                 newFiles.append(targetFilePath);
             } catch (std::exception &e) {

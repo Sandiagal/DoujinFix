@@ -17,7 +17,7 @@ void Compressor::start()
     int compressSizes=0;
     for(int i=0;i<originDirs.length();
         i++,emit setDirBarValue(100*i/originDirs.length())){
-        QThread::msleep(setting->PROCESS_DELAY);
+//        QThread::msleep(setting->PROCESS_DELAY);
         QVector<int> compressInfo = subimageCompression(originDirs.at(i));
         compressCnts+=compressInfo.at(0);
         compressSizes+=compressInfo.at(1);
@@ -33,20 +33,20 @@ void Compressor::revoke()
 
     for(int i=0;i<oldFilesDirs.length();
         i++,emit setDirBarValue(100*i/oldFilesDirs.length())){
-        QThread::msleep(setting->PROCESS_DELAY);
+//        QThread::msleep(setting->PROCESS_DELAY);
         QString dirName = QFileInfo(oldFilesDirs.at(i).at(0)).absolutePath().section("/",-1);
         QDir backupsTargeDir = backupsDir.filePath(dirName);
         int compressCnt=0;
         for(int j=0;j<oldFilesDirs.at(i).length();
             j++,emit setFileBarValue(100*j/oldFilesDirs.at(i).length())){
-//            QThread::msleep(setting->PROCESS_DELAY);
+            QThread::msleep(setting->PROCESS_DELAY/10);
 
             QFileInfo originFile(oldFilesDirs.at(i).at(j));
             QFileInfo targetFile(newFilesDirs.at(i).at(j));
             emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
             try {
-//                QFile::rename(originFile.absoluteDir().filePath(originFile.fileName()), targetFile.absoluteFilePath());
-//                QFile::rename(backupsTargeDir.filePath(originFile.fileName()), originFile.absoluteFilePath());
+                QFile::rename(originFile.absoluteDir().filePath(originFile.fileName()), targetFile.absoluteFilePath());
+                QFile::rename(backupsTargeDir.filePath(originFile.fileName()), originFile.absoluteFilePath());
                 qDebug() << QString::fromLocal8Bit("开始下方");
                 qDebug() << originFile.absoluteDir().filePath(targetFile.fileName())<<"----->"<<targetFile.absoluteFilePath();
                 qDebug() << backupsTargeDir.filePath(originFile.fileName())<<"----->"<<originFile.absoluteFilePath();
@@ -59,7 +59,7 @@ void Compressor::revoke()
         compressCnts+=compressCnt;
         emit writeLog(QString::fromLocal8Bit("%1 / %2 撤销成功\n%3")
                       .arg(compressCnt).arg(oldFilesDirs.at(i).length()).arg(dirName),
-                      LogType::NORMALLOG);
+                      LogType::REPLACELOG);
     }
     emit writeLog(QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2 撤销成功 ━━━━━━━━━━┛")
                   .arg(compressCnts).arg(oldFilesDirs.length()),
@@ -73,23 +73,35 @@ QVector<int> Compressor::subimageCompression(const QString &path)
     QStringList newFiles;
     QStringList targetNameMods;
 
+    QString dirName = path.section("/",-1);
+    QDir backupsTargeDir = backupsDir.filePath(dirName);
+    backupsTargeDir.mkdir(".");
+
     QStringList files=loadFiles(path);
     int compressCnt=0;
+    int warningCnt=0;
     int compressSize=0;
     for(int j=0;j<files.length();
         j++,emit setFileBarValue(100*j/files.length())){
-//        QThread::msleep(setting->PROCESS_DELAY);
+        QThread::msleep(setting->PROCESS_DELAY/10);
 
         QFileInfo originFile(files.at(j));
         emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
         QString targeDir = QDir(setting->TARGET_PATH).filePath(path.section("/",-1));
         QFileInfo targetFile(QDir(targeDir).filePath(originFile.completeBaseName())+".jpg");
+
+        if (!targetFile.exists()) {
+            warningCnt++;
+            qDebug()<<"Do not exists:"<<targetFile.absoluteFilePath();
+            continue;
+        }
+
         qDebug() << originFile.size()/1024<<"----->"<<originFile.absoluteFilePath();
         qDebug() << targetFile.size()/1024<<"----->"<<targetFile.absoluteFilePath();
         if (100*(originFile.size()-targetFile.size())/originFile.size()>setting->SIZE_THRESHOLD) {
             try {
-//                QFile::rename(originFile.absoluteFilePath(), backupsTargeDir.filePath(originFile.fileName()));
-//                QFile::rename(targetFile.absoluteFilePath(), originFile.absoluteDir().filePath(originFile.fileName()));
+                QFile::rename(originFile.absoluteFilePath(), backupsTargeDir.filePath(originFile.fileName()));
+                QFile::rename(targetFile.absoluteFilePath(), originFile.absoluteDir().filePath(originFile.fileName()));
                 compressCnt++;
                 compressSize+=(originFile.size()-targetFile.size())/1024;
                 oldFiles.append(originFile.absoluteFilePath());
@@ -103,13 +115,27 @@ QVector<int> Compressor::subimageCompression(const QString &path)
             qDebug() <<"X compress ";
         }
     }
-    if (oldFiles.length()>0) {
-        oldFilesDirs.append(oldFiles);
-        newFilesDirs.append(newFiles);
-        emit writeLog(QString::fromLocal8Bit("%1 / %2 压缩成功,节约体积 %3 MB\n%4")
-                      .arg(compressCnt).arg(files.length())
-                      .arg(compressSize/1024).arg(QFileInfo(path).fileName()),
-                      LogType::NORMALLOG);
+    if (compressCnt>0 || warningCnt>0) {
+        QString log;
+        int logType;
+        if(compressCnt>0){
+            oldFilesDirs.append(oldFiles);
+            newFilesDirs.append(newFiles);
+            log += QString::fromLocal8Bit("%1 / %2 压缩成功,节约体积 %3 MB\n")
+                            .arg(compressCnt).arg(files.length())
+                            .arg(compressSize/1024);
+            logType = LogType::REPLACELOG;
+        }
+        if (warningCnt>0) {
+            if(log.size()>0)
+                log+="           ";
+            log += QString::fromLocal8Bit("%1 / %2 文件不存在\n")
+                            .arg(warningCnt).arg(files.length());
+            logType = LogType::WARNINGLOG;
+        }
+
+        log += QFileInfo(path).fileName();
+        emit writeLog(log,logType);
     }else {
         emit writeLog(QString::fromLocal8Bit("无需修改\n%1")
                       .arg(QFileInfo(path).fileName()),

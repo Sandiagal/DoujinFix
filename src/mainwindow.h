@@ -13,6 +13,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class QSimpleUpdater;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -28,6 +30,8 @@ private:
     Standardiser *standardiser;
     Compressor *compressor;
     QThread standardiserThread, compressorThread;
+
+    QSimpleUpdater* m_updater;
 
     void standardiserGroupEnable(bool status);
     void compressorGroupEnable(bool status);
@@ -62,6 +66,10 @@ private slots:
     void on_comboBox_currentIndexChanged(int index);
     void on_spinBox_valueChanged(int arg1);
     void on_spinBox_2_valueChanged(int arg1);
+    void on_action_5_triggered();
+
+    void haveUpdate();
+    void updateQuit();
 };
 
 #endif // MAINWINDOW_H
