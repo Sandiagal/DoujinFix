@@ -236,6 +236,8 @@ int Standardiser::fileStandard(const QStringList &files)
         emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
 
         QString targetBaseName(originFile.baseName());
+        targetBaseName.replace(QRegExp("^IMG_(\\d+)$"), "\\1");
+        targetBaseName.replace(QRegExp("^(\\d+)_\\d+$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d)$"), "00\\1");
         targetBaseName.replace(QRegExp("^(\\d{2})$"), "0\\1");
         targetBaseName.replace(QRegExp("0{3,}(\\d)$"), "00\\1");

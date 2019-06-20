@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     a.setApplicationName ("DoujinFix");
 
     QTranslator translator;
-    translator.load("zh_CN.qm");
+    translator.load("translations/zh_CN.qm");
     a.installTranslator(&translator);
 
     MainWindow w;

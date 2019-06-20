@@ -3,7 +3,7 @@
     "windows": {
       "open-url": "",
       "latest-version": "3.03",
-      "download-url": "https://raw.githubusercontent.com/Sandiagal/DoujinFix/master/old_version/2.4/image/1.jpg",
+      "download-url": "https://github.com/Sandiagal/DoujinFix/releases/download/3.03/zh_CN.qm",
       "changelog": "<h3>测试日志</h3><p>-1：lalal</p><p>-2：士大夫</p><p>-3：几何距</p>",
       "mandatory": true
     }
