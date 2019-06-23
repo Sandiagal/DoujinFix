@@ -29,7 +29,6 @@ environment:
   TARGET_NAME: DoujinFix
 
   matrix:
-    - PLATFORM: mingw73_64
     - PLATFORM: msvc2015_64
     
 # this is how to allow failing jobs in the matrix
@@ -51,6 +50,9 @@ install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
 
 build_script:
+  - cd src
   - ls
-  - qmake src\DoujinFix.pro 
+  - qmake -v
+  - qmake DoujinFix.pro CONFIG+=release DESTDIR=%cd% 
   - mingw32-make 
+  - DoujinFix.exe

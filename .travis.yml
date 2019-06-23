@@ -36,5 +36,5 @@ before_install:
 script:
   - cd src
   - qmake DoujinFix.pro 
-  - mingw64-make 
+  - mingw32-make 
   
