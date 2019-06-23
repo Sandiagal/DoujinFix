@@ -24,8 +24,8 @@ environment:
   matrix:
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     platform: x86
-    qt: 5.9
-    releaseName: DoujinFix_qt59_vs2015_x86
+    qt: 5.11
+    releaseName: DoujinFix_qt511_vs2015_x86
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     platform: x64
     qt: 5.12

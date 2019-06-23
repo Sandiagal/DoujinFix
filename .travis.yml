@@ -39,17 +39,19 @@ before_script:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt512/bin/qt512-env.sh; fi
     
 script:
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ./src; source /opt/qt512/bin/qt512-env.sh; qmake ; make ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd ./src; /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
+    - ls
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd /src; source /opt/qt512/bin/qt512-env.sh; qmake ; make ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd /src; /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
     
 before_deploy:
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/macdeployqt ./src/bin/${targetFile}.app -qmldir=/usr/local/Cellar/qt/5.12.2/qml -verbose=1 -dmg ; mv ./src/bin/${targetFile}.dmg ./src/${releaseName} ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mv ./src/bin/${targetFile} ./src/${releaseName} ; fi
+    - ls
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/macdeployqt ./src/bin/${targetFile}.app -qmldir=/usr/local/Cellar/qt/5.12.2/qml -verbose=1 -dmg ; mv /src/bin/${targetFile}.dmg /src/${releaseName} ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mv /src/bin/${targetFile} /src/${releaseName} ; fi
     
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
-  file: ./src/${releaseName}
+  file: /src/${releaseName}
   skip_cleanup: true
   on:
     tags: true
