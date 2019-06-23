@@ -53,4 +53,4 @@ install:
 build_script:
   - ls
   - qmake src\DoujinFix.pro 
-  - mingw64-make 
+  - mingw32-make 
