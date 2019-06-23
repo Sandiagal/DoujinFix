@@ -2,7 +2,7 @@
 
 | [Ubuntu/MacOS][lin-link] | [Windows][win-link] | [License][license-link] | [Quality][quality-link] | [Release][release-link] |
 | :---------------: | :-----------------: | :-----------------: | :-----------------: | :-----------------: |
-| ![lin-badge] | ![win-badge] | ![license-badge] |![quality-badge] | ![release-badge] 
+| ![lin-badge] | ![win-badge] | ![license-badge] |![quality-badge] | ![release-badge] |
 
 [lin-link]: https://travis-ci.org/Sandiagal/DoujinFix "Travis build status"
 [lin-badge]: https://travis-ci.org/Sandiagal/DoujinFix.svg?branch=master "Travis build status"
