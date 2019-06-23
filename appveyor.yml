@@ -29,8 +29,7 @@ environment:
   TARGET_NAME: DoujinFix
 
   matrix:
-  - QT5: C:\Qt\5.12.2\mingw73_64
-    MINGW: C:\Qt\Tools\mingw530_32
+  - QT5: C:\Qt\5.12.2\msvc2015_64
     use_cmake: "false"
     
 # this is how to allow failing jobs in the matrix
@@ -47,9 +46,7 @@ build_script:
   - mkdir .\build
   - cd .\build
   - qmake -v
-  - qmake ..\src\DoujinFix.pro CONFIG+=release DESTDIR=%cd% 
-  - mingw32-make 
-  - DoujinFix.exe
+  - qmake -r -spec win32-msvc CONFIG+=x86_64 CONFIG-=debug CONFIG+=release ..\src\DoujinFix.pro
 
 #---------------------------------#
 #      artifacts configuration    #
