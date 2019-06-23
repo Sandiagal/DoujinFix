@@ -24,13 +24,12 @@ image: Visual Studio 2015
 
 # environment variables
 environment:
-  QT_VER: 5.12.2
-  MAKE_RUN_TESTS: true
-  TARGET_NAME: DoujinFix
+  COMPILER: msvc
+  VSVER: 14
 
   matrix:
-  - QT5: C:\Qt\5.12.2\msvc2015_64
-    use_cmake: "false"
+  - QT: C:\Qt\5.12.2\msvc2015_64
+    platform: x64
     
 # this is how to allow failing jobs in the matrix
 matrix:
@@ -39,7 +38,7 @@ matrix:
 # scripts that run after cloning repository
 install:
   - set QTDIR=C:\Qt\5.12.2\mingw73_64
-  - set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
+  - set PATH=%QT%\bin\;C:\Qt\Tools\QtCreator\bin\;C:\Qt\QtIFW2.0.1\bin\;%PATH%
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
