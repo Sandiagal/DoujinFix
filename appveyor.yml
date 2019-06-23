@@ -48,13 +48,12 @@ before_build:
   - set PATH=%PATH%;%QTDIR%\bin;
   - if "%platform%"=="x86" set vcvarsall=%vs%\vcvarsall.bat
   - if "%platform%"=="x64" set vcvarsall=%vs%\vcvarsall.bat
-  - if "%platform%"=="x86" call "%vcvarsall%" x86
-  - if "%platform%"=="x64" call "%vcvarsall%" x64
   
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - cd .\src
-  - call "%vcvarsall%" x64
+  - if "%platform%"=="x86" call "%vcvarsall%" x86
+  - if "%platform%"=="x64" call "%vcvarsall%" x64
   - qmake
   - nmake
 
