@@ -19,12 +19,13 @@ version: '{build}'
 #    environment configuration    #
 #---------------------------------#
 
-# Build worker image (VM template)
-image: Visual Studio 2015
-
 # environment variables
 environment:
   matrix:
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    platform: x86
+    qt: 5.12
+    releaseName: DoujinFix_qt512_vs2015_x86
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     platform: x64
     qt: 5.12
@@ -50,7 +51,6 @@ before_build:
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - cd .\src
-  - call "%vcvarsall%" x64
   - qmake
   - nmake
 
