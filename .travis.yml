@@ -1,40 +1,67 @@
 language: cpp
 
+sudo: required
+
+compiler: gcc
+
 services:
   - docker
-
-sudo: required
-dist: trusty
-osx_image: xcode10.1
-
-env:
-  global:
-    - QDEP_CACHE_DIR=$HOME/.qdep-cache
-    - QT_VER=5.12.3
-    - DOCKER_IMAGE=base
-    - MAKE_RUN_TESTS=true
-    - TARGET_NAME=DoujinFix
 
 matrix:
   include:
     - os: linux
+      dist: xenial
       env:
-        - PLATFORM=gcc_64
-        - BUILD_DOC=true
-        - BUILD_EXAMPLES=true
-    - os: linux
-      env:
-        - PLATFORM=emscripten
+        targetFile=DoujinFix
+        releaseName=DoujinFix_ubuntu_xenial_x64
+      cache:
+        bundler: true
+        apt: true
+        directories:
+            - /opt/qt512/
     - os: osx
-      env:
-        - PLATFORM=clang_64
+      osx_image: xcode10.2
+      env: 
+        targetFile=DoujinFix
+        releaseName=DoujinFix_macos10-14_xcode10-2.dmg
+      cache:
+        bundler: true
+        directories:
+            - /usr/local/Cellar/qt/5.12.2/
+    - os: osx
+      osx_image: xcode9.4
+      env: 
+        targetFile=DoujinFix
+        releaseName=DoujinFix_macos10-13_xcode9-4.dmg
+      cache:
+        bundler: true
+        directories:
+            - /usr/local/Cellar/qt/5.12.2/
+
+group: deprecated-2019Q1
 
 before_install:
-  - set QTDIR=C:\Qt\5.12.2\mingw73_64
-  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install qt; fi 
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt-5.12.3-xenial -y; sudo apt-get update -qq; sudo apt-get install -y libglew-dev libglfw3-dev; sudo apt-get install -y qt512-meta-minimal; fi
 
+before_script:
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt512/bin/qt512-env.sh; fi
+    
 script:
-  - cd src
-  - qmake DoujinFix.pro 
-  - mingw32-make 
-  
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ./src; source /opt/qt512/bin/qt512-env.sh; qmake ; make ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd ./src; /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
+    
+before_deploy:
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/macdeployqt bin/${targetFile}.app -qmldir=/usr/local/Cellar/qt/5.12.2/qml -verbose=1 -dmg ; mv bin/${targetFile}.dmg bin/${releaseName} ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mv bin/${targetFile} bin/${releaseName} ; fi
+    
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: bin/${releaseName}
+  skip_cleanup: true
+  on:
+    tags: true
+    
+notifications:
+    email: false
