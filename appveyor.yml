@@ -55,13 +55,14 @@ build_script:
   - nmake
 
 after_build:
-  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt .\src\release\DoujinFix.exe --qmldir %QTDIR%\qml
+  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt release\DoujinFix.exe --qmldir %QTDIR%\qml
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
   
 artifacts:
+  - ls
   - path: .\src\release
     name: $(releaseName)
     
