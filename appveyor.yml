@@ -55,7 +55,6 @@ build_script:
   - nmake
 
 after_build:
-  - ls
   - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt release\DoujinFix.exe --qmldir %QTDIR%\qml
 
 #---------------------------------#
