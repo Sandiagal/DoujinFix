@@ -41,13 +41,12 @@ matrix:
       configuration: Debug
 
 install:
-  # by default, all script lines are interpreted as batch
-  - echo This is batch
-  # to run script as a PowerShell command prepend it with ps:
-  - ps: Write-Host 'This is PowerShell'
-  # batch commands start from cmd:
-  - cmd: echo This is batch again
-  - cmd: set MY_VAR=12345
+  - set QTDIR=C:\Qt\5.12.2\mingw73_64
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
+  
+build_script:
+  - qmake QtTest.pro 
+  - mingw64-make 
 
 artifacts:
   - path: install\%TARGET_NAME%_*_%QT_VER%.zip
