@@ -43,13 +43,13 @@ script:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd ./src; /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
     
 before_deploy:
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/macdeployqt bin/${targetFile}.app -qmldir=/usr/local/Cellar/qt/5.12.2/qml -verbose=1 -dmg ; mv bin/${targetFile}.dmg bin/${releaseName} ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mv bin/${targetFile} bin/${releaseName} ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/macdeployqt ./src/bin/${targetFile}.app -qmldir=/usr/local/Cellar/qt/5.12.2/qml -verbose=1 -dmg ; mv ./src/bin/${targetFile}.dmg ./src/${releaseName} ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mv ./src/bin/${targetFile} ./src/${releaseName} ; fi
     
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
-  file: bin/${releaseName}
+  file: ./src/${releaseName}
   skip_cleanup: true
   on:
     tags: true
