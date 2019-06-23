@@ -29,7 +29,8 @@ environment:
   TARGET_NAME: DoujinFix
 
   matrix:
-  - PLATFORM: msvc2015_64
+  - QT5: C:\Qt\5.12.2\mingw73_64
+    MINGW: C:\Qt\Tools\mingw530_32
     use_cmake: "false"
     
 # this is how to allow failing jobs in the matrix
