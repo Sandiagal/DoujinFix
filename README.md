@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/710191a7bf674fc7b51ff0a679638e8c)](https://app.codacy.com/app/Sandiagal/DoujinFix?utm_source=github.com&utm_medium=referral&utm_content=Sandiagal/DoujinFix&utm_campaign=Badge_Grade_Dashboard)
 # FileManagement [![codebeat badge](https://codebeat.co/badges/85771199-cd75-4e26-894b-93568967e7c8)](https://codebeat.co/projects/github-com-sandiagal-doujinfix-master)
 
 一款集合了同人志文件名标准化和文件替换功能的便于批量整理同人志的软件。
