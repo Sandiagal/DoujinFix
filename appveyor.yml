@@ -66,10 +66,10 @@ artifacts:
 
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
-deploy:
-    provider: GitHub
-    auth_token:
-      secure: [token]
-    artifact: release
-    draft: false
-    prerelease: false
+#deploy:
+#    provider: GitHub
+#    auth_token:
+#      secure: [token]
+#    artifact: release
+#    draft: false
+#    prerelease: false
