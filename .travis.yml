@@ -1,0 +1,40 @@
+language: cpp
+
+services:
+  - docker
+
+sudo: required
+dist: trusty
+osx_image: xcode10.1
+
+env:
+  global:
+    - QDEP_CACHE_DIR=$HOME/.qdep-cache
+    - QT_VER=5.12.3
+    - DOCKER_IMAGE=base
+    - MAKE_RUN_TESTS=true
+    - TARGET_NAME=DoujinFix
+
+matrix:
+  include:
+    - os: linux
+      env:
+        - PLATFORM=gcc_64
+        - BUILD_DOC=true
+        - BUILD_EXAMPLES=true
+    - os: linux
+      env:
+        - PLATFORM=emscripten
+    - os: osx
+      env:
+        - PLATFORM=clang_64
+
+before_install:
+  - set QTDIR=C:\Qt\5.12.2\mingw73_64
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
+
+script:
+  - ls
+  - qmake src\DoujinFix.pro 
+  - mingw64-make 
+  

@@ -25,7 +25,13 @@ image: Visual Studio 2015
 # environment variables
 environment:
   QT_VER: 5.12.3
+  MAKE_RUN_TESTS: true
+  TARGET_NAME: DoujinFix
 
+  matrix:
+    - PLATFORM: mingw73_64
+    - PLATFORM: msvc2015_64
+    
 # this is how to allow failing jobs in the matrix
 matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
@@ -45,24 +51,6 @@ install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
 
 build_script:
-  - qmake DoujinFix.pro 
+  - ls
+  - qmake src\DoujinFix.pro 
   - mingw64-make 
-
-artifacts:
-  - path: install\%TARGET_NAME%_*_%QT_VER%.zip
-
-#---------------------------------#
-#     deployment configuration    #
-#---------------------------------#
-
-# providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
-# provider names are case-sensitive!
-  
-deploy:
-  - provider: GitHub
-    artifact: /.*\.nupkg/           # upload all NuGet packages to release assets
-    draft: false
-    prerelease: false
-    on:
-      branch: master                # release from master branch only
-      APPVEYOR_REPO_TAG: true       # deploy on tag push only
