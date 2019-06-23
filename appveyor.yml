@@ -20,25 +20,24 @@
 #---------------------------------#
 
 # Build worker image (VM template)
-#image: Visual Studio 2015
+image: Visual Studio 2015
 
 # environment variables
-#environment:
+environment:
 #  QT_VER: 5.12.3
 #  MAKE_RUN_TESTS: true
 #  TARGET_NAME: DoujinFix
 
-#  matrix:
-#  - QT5: C:\Qt\5.12.2\mingw73_64
-#    MINGW: C:\Qt\Tools\mingw530_32
-#    use_cmake: "false"
+  matrix:
+  - PLATFORM: msvc2015_64
+    use_cmake: "false"
     
 # this is how to allow failing jobs in the matrix
 #matrix:
 #  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
 
-# scripts to run before build
-before_build:
+# scripts that run after cloning repository
+install:
   - set QTDIR=C:\Qt\5.12.2\mingw73_64
   - set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
 
