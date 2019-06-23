@@ -18,7 +18,7 @@ matrix:
         bundler: true
         apt: true
         directories:
-            - /opt/qt512/
+          - /opt/qt512/
     - os: osx
       osx_image: xcode10.2
       env: 
@@ -27,7 +27,7 @@ matrix:
       cache:
         bundler: true
         directories:
-            - /usr/local/Cellar/qt/5.12.2/
+          - /usr/local/Cellar/qt/5.12.2/
     - os: osx
       osx_image: xcode9.4
       env: 
@@ -36,7 +36,7 @@ matrix:
       cache:
         bundler: true
         directories:
-            - /usr/local/Cellar/qt/5.12.2/
+          - /usr/local/Cellar/qt/5.12.2/
 
 group: deprecated-2019Q1
 
