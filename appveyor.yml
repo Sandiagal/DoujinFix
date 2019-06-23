@@ -40,17 +40,14 @@ matrix:
     - platform: x86
       configuration: Debug
 
-# build cache to preserve files/folders between builds
-cache:
-  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
-  - projectA\libs
-  - node_modules                    # local npm modules
-  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
-  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
-
 install:
-  - git clone https://github.com/Skycoder42/QtModules.git .\qtmodules-travis
-  - .\qtmodules-travis\ci\win\setup.bat
+  # by default, all script lines are interpreted as batch
+  - echo This is batch
+  # to run script as a PowerShell command prepend it with ps:
+  - ps: Write-Host 'This is PowerShell'
+  # batch commands start from cmd:
+  - cmd: echo This is batch again
+  - cmd: set MY_VAR=12345
 
 artifacts:
   - path: install\%TARGET_NAME%_*_%QT_VER%.zip
