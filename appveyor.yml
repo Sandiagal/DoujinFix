@@ -24,12 +24,10 @@ image: Visual Studio 2015
 
 # environment variables
 environment:
-  COMPILER: msvc
-  VSVER: 14
-
   matrix:
   - QT: C:\Qt\5.12.2\msvc2015_64
     platform: x64
+    qt: 5.12
     
 # this is how to allow failing jobs in the matrix
 matrix:
@@ -37,15 +35,20 @@ matrix:
 
 # scripts that run after cloning repository
 install:
-  - set QTDIR=C:\Qt\5.12.2\mingw73_64
-  - set PATH=%QT%\bin\;C:\Qt\Tools\QtCreator\bin\;C:\Qt\QtIFW2.0.1\bin\;%PATH%
+  - set msvc=msvc2015
+  - set vs=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
+  - set QTDIR=C:\Qt\%qt%\%msvc%_64
+  - set PATH=%PATH%;%QTDIR%\bin;
+  - set vcvarsall=%vs%\vcvarsall.bat
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - mkdir .\build
   - cd .\build
+  - call "%vcvarsall%" x64
   - qmake -v
-  - qmake -r -spec win32-msvc CONFIG+=x86_64 CONFIG-=debug CONFIG+=release ..\src\DoujinFix.pro
+  - qmake
+  - nmake
 
 #---------------------------------#
 #      artifacts configuration    #
