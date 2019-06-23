@@ -54,12 +54,15 @@ build_script:
   - qmake
   - nmake
 
+after_build:
+  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt release\DoujinFix.exe --qmldir %QTDIR%\qml
+
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
   
 artifacts:
-  - path: make\release
+  - path: release
     name: $(releaseName)
     
 #---------------------------------#
@@ -68,10 +71,12 @@ artifacts:
 
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
-#deploy:
-#    provider: GitHub
-#    auth_token:
-#      secure: [token]
-#    artifact: release
-#    draft: false
-#    prerelease: false
+deploy:
+  provider: GitHub
+  auth_token:
+      secure: $(GITHUB_OAUTH_TOKEN)
+  artifact: release
+  draft: false
+  prerelease: false
+  on:
+      APPVEYOR_REPO_TAG: true
