@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-#version: build-{build}
+version: build-{build}
 
 # you can use {branch} name in version format too
 # version: 1.0.{build}-{branch}
@@ -24,7 +24,7 @@ image: Visual Studio 2015
 
 # environment variables
 environment:
-  QT_VER: 5.12.3
+  QT_VER: 5.12.2
   MAKE_RUN_TESTS: true
   TARGET_NAME: DoujinFix
 
@@ -33,8 +33,8 @@ environment:
     use_cmake: "false"
     
 # this is how to allow failing jobs in the matrix
-#matrix:
-#  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+matrix:
+  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
 
 # scripts that run after cloning repository
 install:
