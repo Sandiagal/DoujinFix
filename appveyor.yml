@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-version: build-{build}
+version: '{build}'
 
 # you can use {branch} name in version format too
 # version: 1.0.{build}-{branch}
@@ -25,28 +25,25 @@ image: Visual Studio 2015
 # environment variables
 environment:
   matrix:
-  - QT: C:\Qt\5.12.2\msvc2015_64
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     platform: x64
     qt: 5.12
+    releaseName: DoujinFix_qt512_vs2015_x64
     
 # this is how to allow failing jobs in the matrix
 matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
 
-# scripts that run after cloning repository
-install:
+# to run your custom scripts instead of automatic MSBuild
+build_script:
   - set msvc=msvc2015
   - set vs=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
   - set QTDIR=C:\Qt\%qt%\%msvc%_64
   - set PATH=%PATH%;%QTDIR%\bin;
   - set vcvarsall=%vs%\vcvarsall.bat
-
-# to run your custom scripts instead of automatic MSBuild
-build_script:
   - mkdir .\build
   - cd .\build
   - call "%vcvarsall%" x64
-  - qmake -v
   - qmake
   - nmake
 
@@ -56,9 +53,8 @@ build_script:
   
 artifacts:
   - path: make\release
-    name: release
+    name: $(releaseName)
     
-
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
