@@ -34,15 +34,22 @@ environment:
 matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
 
+before_build:
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set msvc=msvc2015
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set vs=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set msvc=msvc2017
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set vs=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build
+  - if "%platform%"=="x86" set QTDIR=C:\Qt\%qt%\%msvc%
+  - if "%platform%"=="x64" set QTDIR=C:\Qt\%qt%\%msvc%_64
+  - set PATH=%PATH%;%QTDIR%\bin;
+  - if "%platform%"=="x86" set vcvarsall=%vs%\vcvarsall.bat
+  - if "%platform%"=="x64" set vcvarsall=%vs%\vcvarsall.bat
+  - if "%platform%"=="x86" call "%vcvarsall%" x86
+  - if "%platform%"=="x64" call "%vcvarsall%" x64
+  
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - set msvc=msvc2015
-  - set vs=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
-  - set QTDIR=C:\Qt\%qt%\%msvc%_64
-  - set PATH=%PATH%;%QTDIR%\bin;
-  - set vcvarsall=%vs%\vcvarsall.bat
-  - mkdir .\build
-  - cd .\build
+  - cd .\src
   - call "%vcvarsall%" x64
   - qmake
   - nmake
