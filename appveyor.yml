@@ -29,30 +29,23 @@ environment:
   TARGET_NAME: DoujinFix
 
   matrix:
-    - PLATFORM: msvc2015_64
+  - QT5: C:\Qt\5.12.2\mingw73_64
+    MINGW: C:\Qt\Tools\mingw530_32
+    use_cmake: "false"
     
 # this is how to allow failing jobs in the matrix
 matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
-  allow_failures:
-    - platform: x86
-      configuration: Debug
-    - platform: x64
-      configuration: Release
 
-# exclude configuration from the matrix. Works similarly to 'allow_failures' but build not even being started for excluded combination.
-  exclude:
-    - platform: x86
-      configuration: Debug
+# scripts to run before build
+before_build:
+- set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
 
-install:
-  - set QTDIR=C:\Qt\5.12.2\mingw73_64
-  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
-
+# to run your custom scripts instead of automatic MSBuild
 build_script:
-  - cd src
-  - ls
+  - mkdir .\build
+  - cd .\build
   - qmake -v
-  - qmake DoujinFix.pro CONFIG+=release DESTDIR=%cd% 
+  - qmake ..\src\DoujinFix.pro CONFIG+=release DESTDIR=%cd% 
   - mingw32-make 
   - DoujinFix.exe
