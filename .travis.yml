@@ -34,7 +34,7 @@ before_install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin 
 
 script:
-  - ls
-  - qmake src\DoujinFix.pro 
+  - cd src
+  - qmake DoujinFix.pro 
   - mingw64-make 
   
