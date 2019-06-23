@@ -28,15 +28,6 @@ matrix:
         bundler: true
         directories:
           - /usr/local/Cellar/qt/5.12.2/
-    - os: osx
-      osx_image: xcode9.4
-      env: 
-        targetFile=DoujinFix
-        releaseName=DoujinFix_macos10-13_xcode9-4.dmg
-      cache:
-        bundler: true
-        directories:
-          - /usr/local/Cellar/qt/5.12.2/
 
 group: deprecated-2019Q1
 

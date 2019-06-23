@@ -1,18 +1,21 @@
 # FileManagement 
 
-| [Ubuntu/MacOS][lin-link] | [Windows][win-link] |[License][license-link] | [Quality][quality-link]|
-| :---------------: | :-----------------: | :-----------------:|:-----------------: |
-| ![lin-badge]      | ![win-badge]        | ![license-badge] |![quality-badge] |
+| [Ubuntu/MacOS][lin-link] | [Windows][win-link] | [License][license-link] | [Quality][quality-link] | [Release][release-link] |
+| :---------------: | :-----------------: | :-----------------: | :-----------------: | :-----------------: |
+| ![lin-badge] | ![win-badge] | ![license-badge] |![quality-badge] | ![release-badge] 
 
 [lin-link]: https://travis-ci.org/Sandiagal/DoujinFix "Travis build status"
 [lin-badge]: https://travis-ci.org/Sandiagal/DoujinFix.svg?branch=master "Travis build status"
 [win-link]: https://ci.appveyor.com/project/Sandiagal/doujinfix/branch/master "AppVeyor build status"
 [win-badge]: https://ci.appveyor.com/api/projects/status/cp8keobtm8pst0s5?svg=true "AppVeyor build status"
-[license-link]: https://github.com/jaredtao/HelloCI/blob/master/LICENSE "LICENSE"
-[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg "MIT"
+[license-link]: https://github.com/Sandiagal/DoujinFix/blob/master/LICENSE "LICENSE"
+[license-badge]: https://img.shields.io/github/license/Sandiagal/DoujinFix.svg "GPL-3.0"
 [quality-link]: https://www.codacy.com/app/Sandiagal/DoujinFix?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sandiagal/DoujinFix&amp;utm_campaign=Badge_Grade "Code quality status"
 [quality-badge]: https://api.codacy.com/project/badge/Grade/bafffe84e9ac4c8dbb085fbf212b7097 "Code quality status"
-
+[release-link]: https://github.com/Sandiagal/DoujinFix/releases "Release status"
+[release-badge]: https://img.shields.io/github/release/Sandiagal/DoujinFix.svg?style=flat-square "Release status"
+[download-link]: https://github.com/Sandiagal/DoujinFix/releases/latest "Download status"
+[download-badge]: https://img.shields.io/github/downloads/Sandiagal/DoujinFix/total.svg?style=flat-square "Download status"
 
 一款集合了同人志文件名标准化和文件替换功能的便于批量整理同人志的软件。
 
@@ -155,3 +158,5 @@
 品红色表示处理成功；并在下方显示处理成功文件数和减少的体积；蓝色是处理开始于结束的标记，最下方将显示总处理成功文件的个数和减少的总体积。
 
 “重开”按钮用于开启下一轮文件处理。
+
+
