@@ -74,7 +74,7 @@ artifacts:
 deploy:
   provider: GitHub
   auth_token:
-      secure: $(GITHUB_OAUTH_TOKEN)
+      secure: aqtpANVg31L0eFsfl6mK8cIHOCKi7+onHfHnVKzrXr9jYBCsAAcE406A9ao4LEFh
   artifact: release
   draft: false
   prerelease: false
