@@ -1,6 +1,5 @@
 # FileManagement 
 
-
 [![Travis](https://img.shields.io/travis/Sandiagal/DoujinFix.svg?style=flat-square&label=Travis+CI)](https://travis-ci.org/Sandiagal/DoujinFix)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/Sandiagal/DoujinFix.svg?style=flat-square&label=AppVeyor&logo=appveyor)](https://ci.appveyor.com/project/Sandiagal/doujinfix/branch/master)
 [![LICENSE](https://img.shields.io/github/license/Sandiagal/DoujinFix.svg?style=flat-square)](https://github.com/Sandiagal/DoujinFix/blob/master/LICENSE)
