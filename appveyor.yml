@@ -50,19 +50,21 @@ before_build:
   
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - cd .\src
+  - cd src
   - qmake
   - nmake
 
 after_build:
-  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt release\DoujinFix.exe --qmldir %QTDIR%\qml
+  - pwd
+  - ls
+  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt src\release\DoujinFix.exe --qmldir %QTDIR%\qml
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
   
 artifacts:
-  - path: \release
+  - path: src\release
     name: $(releaseName)
     
 #---------------------------------#
