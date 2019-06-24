@@ -1,5 +1,10 @@
 # FileManagement 
 
+[![AppVeyor Build Status](https://img.shields.io/appveyor/ci/Sandiagal/DoujinFix.svg?style=flat-square&label=AppVeyor&logo=appveyor)](https://ci.appveyor.com/project/Sandiagal/doujinfix/branch/master)
+
+
+
+
 | [Ubuntu/MacOS][lin-link] | [Windows][win-link] | [License][license-link] | [Quality][quality-link] | [Release][release-link] |
 | :---------------: | :-----------------: | :-----------------: | :-----------------: | :-----------------: |
 | ![lin-badge] | ![win-badge] | ![license-badge] |![quality-badge] | ![release-badge] |

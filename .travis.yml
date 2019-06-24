@@ -46,6 +46,7 @@ script:
     - ls
     - cd /bin
     - ls
+    - find / -name DoujinFix
     
 before_deploy:
     - ls
