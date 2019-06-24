@@ -57,7 +57,7 @@ build_script:
 after_build:
   - pwd
   - ls
-  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt src\release\DoujinFix.exe --qmldir %QTDIR%\qml
+  - if "%APPVEYOR_REPO_TAG%"=="true" windeployqt release\DoujinFix.exe --qmldir %QTDIR%\qml
 
 #---------------------------------#
 #      artifacts configuration    #
