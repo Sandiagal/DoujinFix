@@ -44,7 +44,7 @@ script:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
     - pwd
     - ls
-    - cd Makefile
+    - cd /bin
     - ls
     
 before_deploy:
