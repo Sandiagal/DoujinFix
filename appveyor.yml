@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-version: '{build}'
+version: 3.02
 
 # you can use {branch} name in version format too
 # version: 1.0.{build}-{branch}
@@ -62,7 +62,7 @@ after_build:
 #---------------------------------#
   
 artifacts:
-  - path: .\src\release
+  - path: \release
     name: $(releaseName)
     
 #---------------------------------#

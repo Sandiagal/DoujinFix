@@ -43,6 +43,8 @@ script:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt512/bin/qt512-env.sh; qmake ; make ; fi
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then /usr/local/Cellar/qt/5.12.2/bin/qmake ; make ; fi
     - ls
+    - cd ..
+    - ls
     
 before_deploy:
     - ls
