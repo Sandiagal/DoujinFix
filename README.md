@@ -76,7 +76,7 @@
 
 - 1、指定“源头目录路径”
 
-  ![path1](\screenshots\path1.jpg) 
+  ![path1](screenshots\path1.jpg) 
   
   待处理的多个同人志的文件夹。该文件夹应当形如如下结构：
 
@@ -92,7 +92,7 @@
 
 - 2、执行算法
 
-  ![setting1](\screenshots\setting1.jpg)
+  ![setting1](screenshots\setting1.jpg)
 
   点击“运行”即可。
   
@@ -100,7 +100,7 @@
 
 - 3、欣赏结果
 
-  ![log1](\screenshots\log1.jpg)
+  ![log1](screenshots\log1.jpg)
   
   所有文件夹的信息将显示在界面右侧。每条处理结果将包含：处理标示、原始名称、标准名称等信息。最后将进行结果总结，显示处理总数。
 
@@ -140,7 +140,7 @@
 
 - 1、指定“源头目录路径”和“目标目录路径”
 
-  ![path2](\screenshots\path2.jpg) 
+  ![path2](screenshots\path2.jpg) 
   
   “源头目录路径”代表原始同人志的文件夹，“目标目录路径”代表用户自行重编码的同人志的文件夹。两个文件夹应当具有相同结构，形如如下结构：
 
@@ -165,7 +165,7 @@
 
 - 2、执行算法
 
-  ![setting2](\screenshots\setting2.jpg)
+  ![setting2](screenshots\setting2.jpg)
 
   点击“运行”即可。
   
@@ -173,7 +173,7 @@
 
 - 3、欣赏结果
 
-  ![log2](\screenshots\log2.jpg)
+  ![log2](screenshots\log2.jpg)
   
   所有文件夹的信息将显示在界面右侧。每条处理结果将包含：处理标示、原始名称、替换等信息。最后将进行结果总结，显示处理总数。
 
@@ -189,20 +189,20 @@
 
 - 重开
 
-  ![restart](\screenshots\restart.jpg)
+  ![restart](screenshots\restart.jpg)
 
     - 重置所有操作，用于开启下一轮文件处理。
 
 - 运行模式
 
-  ![model](\screenshots\model.jpg)
+  ![model](screenshots\model.jpg)
 
   - 极速运算：满速运行算法，界面会卡顿。
   - 流畅交互：限速运行算法，界面很流畅。
 
 - 顶部菜单
 
-  ![top](\screenshots\top.jpg)
+  ![top](screenshots\top.jpg)
 
   - 配置文件：打开配置文件“config.ini”。软件会保存每次运行的配置，并自动读取。
   - 原作映射：打开原作映射表“parodyMap.txt”。具体作用参见“名称标准化-功能说明-原作映射”。
