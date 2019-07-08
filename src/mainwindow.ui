@@ -124,10 +124,10 @@
              <item>
               <widget class="DragLineEdit" name="lineEdit_2">
                <property name="text">
-                <string>E:\Temporary\1Check\2Check</string>
+                <string>D:/path/to/origin</string>
                </property>
                <property name="cursorPosition">
-                <number>26</number>
+                <number>17</number>
                </property>
                <property name="dragEnabled">
                 <bool>false</bool>
@@ -137,7 +137,7 @@
              <item>
               <widget class="DragLineEdit" name="lineEdit_3">
                <property name="text">
-                <string>E:\Temporary\新建文件夹</string>
+                <string>D:/path/to/target</string>
                </property>
                <property name="dragEnabled">
                 <bool>false</bool>
@@ -620,7 +620,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/Archive manage.ico</normaloff>:/ico/Archive manage.ico</iconset>
    </property>
    <property name="text">
@@ -635,7 +635,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/Setting.ico</normaloff>:/ico/Setting.ico</iconset>
    </property>
    <property name="text">
@@ -653,7 +653,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/Finder.ico</normaloff>:/ico/Finder.ico</iconset>
    </property>
    <property name="text">
@@ -662,7 +662,7 @@
   </action>
   <action name="action_2">
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/TextEdit.ico</normaloff>:/ico/TextEdit.ico</iconset>
    </property>
    <property name="text">
@@ -671,7 +671,7 @@
   </action>
   <action name="action_3">
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/DigitalColor Meter.ico</normaloff>:/ico/DigitalColor Meter.ico</iconset>
    </property>
    <property name="text">
@@ -683,7 +683,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/iSync.ico</normaloff>:/ico/iSync.ico</iconset>
    </property>
    <property name="text">
@@ -692,7 +692,7 @@
   </action>
   <action name="action_6">
    <property name="icon">
-    <iconset>
+    <iconset resource="icon.qrc">
      <normaloff>:/ico/Battery.ico</normaloff>:/ico/Battery.ico</iconset>
    </property>
    <property name="text">
@@ -733,6 +733,8 @@
    <header>custom/draglineedit.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icon.qrc"/>
+ </resources>
  <connections/>
 </ui>

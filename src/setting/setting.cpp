@@ -33,8 +33,8 @@ void Setting::loadSetting()
 {
     QSettings settings("config.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
-    ORIGIN_PATH=settings.value("ORIGIN_PATH", "E:/Temporary/1Check/doujin").toString();
-    TARGET_PATH=settings.value("TARGET_PATH", QString::fromLocal8Bit("E:/Temporary/新建文件夹")).toString();
+    ORIGIN_PATH=settings.value("ORIGIN_PATH", "D:/path/to/origin").toString();
+    TARGET_PATH=settings.value("TARGET_PATH", "D:/path/to/target").toString();
     PROCESS_DELAY=settings.value("PROCESS_DELAY", 5).toInt();
     INDEX_FIX=settings.value("INDEX_FIX", true).toBool();
     PARODY_MAP=settings.value("PARODY_MAP", true).toBool();

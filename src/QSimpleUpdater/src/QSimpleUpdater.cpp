@@ -414,10 +414,10 @@ Updater* QSimpleUpdater::getUpdater (const QString& url) const
         URLS.append (url);
         UPDATERS.append (updater);
 
-        connect (updater, SIGNAL (haveUpdate  ()),
-                 this,    SIGNAL (haveUpdate  ()));
-        connect (updater, SIGNAL (quitNow  ()),
-                 this,    SIGNAL (quitNow  ()));
+        connect (updater, SIGNAL (haveUpdate    ()),
+                 this,    SIGNAL (haveUpdate    ()));
+        connect (updater, SIGNAL (quitNow   ()),
+                 this,    SIGNAL (quitNow   ()));
         connect (updater, SIGNAL (checkingFinished  (QString)),
                  this,    SIGNAL (checkingFinished  (QString)));
         connect (updater, SIGNAL (downloadFinished  (QString, QString)),

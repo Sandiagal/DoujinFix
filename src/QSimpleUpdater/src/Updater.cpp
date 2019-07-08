@@ -367,7 +367,7 @@ void Updater::setMandatoryUpdate(const bool mandatory_update)
 
 void Updater::doUpdates()
 {
-    setUpdateAvailable (compare (latestVersion(), moduleVersion()));
+    setUpdateAvailable (true);
     emit checkingFinished (url());
 }
 /**
@@ -421,7 +421,9 @@ void Updater::onReply (QNetworkReply* reply)
         m_mandatoryUpdate = platform.value ("mandatory-update").toBool();
 
     /* Compare latest and current version */
-    emit haveUpdate();
+    if (compare (latestVersion(), moduleVersion())) {
+        emit haveUpdate();
+    }
 }
 
 /**

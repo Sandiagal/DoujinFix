@@ -138,7 +138,7 @@ void Standardiser::revoke()
             if(successFileCnt>0){
                 successDirFileCnt+=1;
                 successFileCnts+=successFileCnt;
-                filelog = QString::fromLocal8Bit("%3\n         ┗━ %1 / %2 序号撤销成功")
+                filelog = QString::fromLocal8Bit("%3\n           ┗━ %1 / %2 序号撤销成功")
                         .arg(successFileCnt).arg(fileCnt).arg(QFileInfo(originDirs[i]).fileName());
             }
         }
@@ -338,7 +338,7 @@ int Standardiser::fileStandard(const QStringList &files)
         if (warningCnt>0) {
             if(!log.isEmpty()){
                 log.replace(QString::fromLocal8Bit("┗━"),QString::fromLocal8Bit("┣━"));
-                log+="\n                   ";
+                log+="\n           ";
             }
             log += QString::fromLocal8Bit("┗━ %1 / %2 序号非标准")
                     .arg(warningCnt).arg(files.length());

@@ -111,8 +111,6 @@ void Downloader::setUrlId (const QString& url)
  */
 void Downloader::startDownload (const QUrl& url)
 {
-    m_downloadDir.mkdir(".");
-
     /* Reset UI */
     m_ui->progressBar->setValue (0);
     m_ui->stopButton->setText (tr ("Stop"));
@@ -188,8 +186,14 @@ void Downloader::finished()
  */
 void Downloader::openDownload()
 {
-    if (!m_fileName.isEmpty())
-        QDesktopServices::openUrl(QUrl::fromLocalFile(m_downloadDir.absolutePath()));
+    if (!m_fileName.isEmpty()){
+        QDesktopServices::openUrl(QUrl(m_downloadDir.absolutePath(), QUrl::TolerantMode));
+//        QString filePath = m_downloadDir.absoluteFilePath( m_fileName);
+//        filePath.replace("/","\\");
+//        QStringList args;
+//        args << "/select," << QDir::toNativeSeparators(filePath);
+//        QProcess::startDetached("explorer", args);
+    }
     else {
         QMessageBox::critical (this,
                                tr ("Error"),
