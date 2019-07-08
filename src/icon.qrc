@@ -1,52 +1,14 @@
 <RCC>
     <qresource prefix="/">
-        <file>ico/Activity Monitor.ico</file>
-        <file>ico/Address Book.ico</file>
-        <file>ico/Application.ico</file>
         <file>ico/Archive manage.ico</file>
-        <file>ico/Audio MIDI Setup.ico</file>
         <file>ico/Battery.ico</file>
-        <file>ico/Bluetooth.ico</file>
-        <file>ico/Chess.ico</file>
-        <file>ico/Console.ico</file>
-        <file>ico/Dashboard.ico</file>
-        <file>ico/DigitalColor Meter.ico</file>
-        <file>ico/Earth.ico</file>
         <file>ico/Finder.ico</file>
-        <file>ico/Folder Music.ico</file>
-        <file>ico/Folder Photo.ico</file>
-        <file>ico/Folder Tools.ico</file>
-        <file>ico/Folder.ico</file>
-        <file>ico/Front Row.ico</file>
-        <file>ico/Hard Drive.ico</file>
-        <file>ico/Home.ico</file>
-        <file>ico/iCal.ico</file>
-        <file>ico/iChat.ico</file>
-        <file>ico/icon.qrc</file>
-        <file>ico/Image Capture.ico</file>
-        <file>ico/Intranet.ico</file>
-        <file>ico/iSync.ico</file>
-        <file>ico/iTunes.ico</file>
-        <file>ico/Joystick.ico</file>
-        <file>ico/Keychain Access.ico</file>
-        <file>ico/Laptop.ico</file>
-        <file>ico/Lock.ico</file>
-        <file>ico/Mac.ico</file>
-        <file>ico/Microphone.ico</file>
-        <file>ico/Network Utility.ico</file>
-        <file>ico/Play.ico</file>
-        <file>ico/Podcaste capture.ico</file>
-        <file>ico/Safari.ico</file>
-        <file>ico/Safe.ico</file>
         <file>ico/Setting.ico</file>
-        <file>ico/System Preferences.ico</file>
-        <file>ico/Terminal.ico</file>
         <file>ico/TextEdit.ico</file>
-        <file>ico/Time Machine.ico</file>
-        <file>ico/Trash Empty.ico</file>
-        <file>ico/Trash Full.ico</file>
-        <file>ico/Unlock.ico</file>
-        <file>ico/Xcode.ico</file>
         <file>ico/Sandiagal.ico</file>
+        <file>ico/Receipt.ico</file>
+        <file>ico/Console.ico</file>
+        <file>ico/DigitalColor Meter.ico</file>
+        <file>ico/iSync.ico</file>
     </qresource>
 </RCC>

@@ -18,48 +18,41 @@
  * You can contact us at sandiagal2525@gmail.com
 */
 
-#ifndef STANDARDISER_H
-#define STANDARDISER_H
+#ifndef LOGLISTMODEL_H
+#define LOGLISTMODEL_H
 
-#include <QFileInfo>
-#include <QString>
+#include <QAbstractListModel>
 #include <QStringList>
-#include "custom/loglistmodel.h"
-#include "file/baseFile.h"
+#include <QList>
 
-class Standardiser : public BaseFile
+namespace LogType
+{
+    enum LogTypeEnum {OKLOG,ERRORLOG,IGNORELOG,NAMELOG,INDEXLOG,REPLACELOG,WARNINGLOG};
+}
+
+class LogListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit Standardiser(Setting *setting, QObject *parent=nullptr);
+    LogListModel(QObject *parent = nullptr, int savelog = 100);
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
 
-    void start() override;
-    void revoke() override;
-
-    QStringList newDirs;
+    void FlushLogFile(bool isExiting = false);
+    QStringList logList;
+    QStringList logCopy;
 
 private:
-    QStringList *patterns;
-
-    QString dirStandard(QFileInfo &dirInfo);
-    int fileStandard(const QStringList &files);
-    QString &nameAnalysis(QString &name);
-    QString &stringReplacement(QString &name);
-    bool ifvalid(QString &name);
-    QString haveTranslators(QString &name);
-    QString ifLowQuality(QString &name, QString path);
-    QStringList readInfo(const QString &name);
-
-    float stringSimilar(const QString &strA,const QString &strB);
-    void parodyMap(QString &parody);
-
-    QString join(QStringList &component);
-    QString &stringReplacement2(QString &name);
+    int m_LogQueThreshold;
+    QStringList logTimeList;
+    QList<int> logTypeList;
 
 signals:
-    void setProgressBarValue(int value);
+    void doneWriting();
 
 public slots:
+    void WriteLog(QString string, int type = 1, QString copy = "");
+    void DelOldLog(int delDate=7);
 };
 
-#endif // STANDARDISER_H
+#endif // LOGLISTMODEL_H

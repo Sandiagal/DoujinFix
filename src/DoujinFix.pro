@@ -9,7 +9,7 @@ QT       += core gui widgets
 TARGET = DoujinFix
 TEMPLATE = app
 
-VERSION = 3.02
+VERSION = 3.03
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -28,17 +28,19 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 CONFIG += c++11
 
 SOURCES += \
+    custom/draglineedit.cpp \
         main.cpp \
         mainwindow.cpp \
-        loglistmodel.cpp \
+        custom/loglistmodel.cpp \
         setting/setting.cpp \
     file/standardiser.cpp \
     file/compressor.cpp \
     file/baseFile.cpp
 
 HEADERS += \
+    custom/draglineedit.h \
         mainwindow.h \
-        loglistmodel.h \
+        custom/loglistmodel.h \
         setting/setting.h \
     file/standardiser.h \
     file/compressor.h \

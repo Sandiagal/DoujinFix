@@ -1,6 +1,27 @@
-﻿#include "standardiser.h"
+﻿/*
+ * The Doujinfix – a Qt-based batch arrangement software for Doujinshi that
+ * includes Doujinshi file name standardization and compressed image replacement.
+ * Copyright (C) 2019 Sandiagal
+ *
+ * This program is free software:
+ * you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at sandiagal2525@gmail.com
+*/
+
+#include "standardiser.h"
 
 #include <QImageReader>
+#include <QPixmap>
 
 
 Standardiser::Standardiser(Setting *setting, QObject *parent):
@@ -39,6 +60,7 @@ Standardiser::Standardiser(Setting *setting, QObject *parent):
 
 void Standardiser::start()
 {
+    emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (`·Д·)シ 开始名称标准化 ━━━━━━━━━━┓"),LogType::OKLOG);
     originDirs.clear();
     newDirs.clear();
     int successDir=0;
@@ -70,17 +92,18 @@ void Standardiser::start()
         }
     }
 
-    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 命名标准化成功 ━━━━━━━━━━┛")
+    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 名称标准化成功 ━━━━━━━━━━┛")
             .arg(successDir).arg(dirs.length());
     if (setting->INDEX_FIX) {
-        log+=QString::fromLocal8Bit("\n%3 %1 / %2 序号标准化成功")
-                .arg(successFileCnt).arg(successDirFileCnt).arg(QString().fill(' '),45);
+        log+=QString::fromLocal8Bit("\n%3┗━━━━━  %1 / %2 序号标准化成功 ━━━━━┛")
+                .arg(successFileCnt).arg(successDirFileCnt).arg(QString().fill(' '),27);
     }
     emit writeLog(log,LogType::OKLOG);
 }
 
 void Standardiser::revoke()
 {
+    emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (‘_ゝ`) 撤销名称标准化 ━━━━━━━━━━┓"),LogType::OKLOG);
     int dirCnt=0;
     int successDirCnt=0;
     int fileCnt=0;
@@ -115,7 +138,7 @@ void Standardiser::revoke()
             if(successFileCnt>0){
                 successDirFileCnt+=1;
                 successFileCnts+=successFileCnt;
-                filelog = QString::fromLocal8Bit("%3\n           ┗━%1 / %2 序号撤销成功")
+                filelog = QString::fromLocal8Bit("%3\n         ┗━ %1 / %2 序号撤销成功")
                         .arg(successFileCnt).arg(fileCnt).arg(QFileInfo(originDirs[i]).fileName());
             }
         }
@@ -129,26 +152,28 @@ void Standardiser::revoke()
                 emit writeLog(QString::fromLocal8Bit("撤销成功\n%1     ---------->\n%2")
                               .arg(QFileInfo(newDirs[i]).fileName())
                               .arg(QFileInfo(originDirs[i]).fileName()),
-                              LogType::NAMELOG);
+                              LogType::NAMELOG,
+                              QFileInfo(originDirs[i]).absoluteFilePath());
             } catch (std::exception &e) {
                 qDebug()<<e.what();
                 qDebug()<<"rename filed:"<<QFileInfo(newDirs[i]).fileName();
                 emit writeLog(QString::fromLocal8Bit("撤销失败\n%1")
                               .arg(QFileInfo(newDirs[i]).fileName()),
-                              LogType::ERRORLOG);
+                              LogType::ERRORLOG,
+                              QFileInfo(originDirs[i]).absoluteFilePath());
             }
         }
 
         if (setting->INDEX_FIX&&filelog.size()>0){
-            emit writeLog(filelog,LogType::INDEXLOG);
+            emit writeLog(filelog,LogType::INDEXLOG,QFileInfo(originDirs[i]).absoluteFilePath());
         }
 
     }
-    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2  命名撤销成功 ━━━━━━━━━━┛")
+    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2  命名标准化撤销成功 ━━━━━━━━━━┛")
             .arg(successDirCnt).arg(dirCnt);
     if (setting->INDEX_FIX)
-        log+=QString::fromLocal8Bit("\n%3 %1 / %2 序号撤销成功")
-                .arg(successFileCnts).arg(successDirFileCnt).arg(QString().fill(' '),45);
+        log+=QString::fromLocal8Bit("\n%3┗━━━━━ %1 / %2 序号撤销成功 ━━━━━┛")
+                .arg(successFileCnts).arg(successDirFileCnt).arg(QString().fill(' '),33);
     emit writeLog(log,LogType::OKLOG);
 }
 
@@ -170,16 +195,28 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
 
     nameAnalysis(name);
 
-    QStringList component;
-    component.append(special);
-    component.append(readInfo(name));
-    if (component.length()==0) {
+    if(!ifvalid(name)){
+        newDirs.append("");
+        emit writeLog(QString::fromLocal8Bit("命名不合法\n%1")
+                      .arg(dirInfo.fileName()),
+                      LogType::ERRORLOG,
+                      dirInfo.absoluteFilePath());
+        return dirInfo.absoluteFilePath();
+    }
+
+    QStringList component(readInfo(name));
+    if (component.length()==0 || component.back().contains("]")) {
         newDirs.append("");
         emit writeLog(QString::fromLocal8Bit("命名真奇葩\n%1")
                       .arg(dirInfo.fileName()),
-                      LogType::ERRORLOG);
+                      LogType::ERRORLOG,
+                      dirInfo.absoluteFilePath());
         return dirInfo.absoluteFilePath();
     }
+    if (!component.back().isEmpty() && special.contains(QString::fromLocal8Bit("★"))) {
+        special.replace(QString::fromLocal8Bit("★"),"");
+    }
+    component.push_front(special);
 
     QString result=join(component);
     qDebug() << "Special :"<<component[0];
@@ -201,7 +238,8 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
         newDirs.append("");
         emit writeLog(QString::fromLocal8Bit("无需修改\n%1")
                       .arg(result),
-                      LogType::IGNORELOG);
+                      LogType::IGNORELOG,
+                      dirInfo.absoluteFilePath());
         return dirInfo.absoluteFilePath();
     }else {
         try {
@@ -209,8 +247,9 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
             newDirs.append(resultPath);
             qDebug()<<dirInfo.absoluteFilePath()<<"----->"<<resultPath;
             emit writeLog(QString::fromLocal8Bit("标准化成功\n%1     ---------->\n%2")
-                          .arg(dirInfo.fileName())
-                          .arg(result), LogType::NAMELOG);
+                          .arg(dirInfo.fileName()).arg(result),
+                          LogType::NAMELOG,
+                          resultPath);
             return resultPath;
         } catch (std::exception &e) {
             newDirs.append("");
@@ -218,7 +257,8 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
             qDebug()<<"rename filed";
             emit writeLog(QString::fromLocal8Bit("重命名失败\n")
                           .arg(dirInfo.fileName()),
-                          LogType::ERRORLOG);
+                          LogType::ERRORLOG,
+                          dirInfo.absoluteFilePath());
             return dirInfo.absoluteFilePath();
         }
     }
@@ -228,23 +268,48 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
 int Standardiser::fileStandard(const QStringList &files)
 {
     int compressCnt=0;
+    int warningCnt=0;
     QStringList oldFiles;
     QStringList newFiles;
+    QString lastName;
     for(int i=0;i<files.length();i++){
 
-        QFileInfo originFile(files.at(i));
+        QFileInfo originFile(files[i]);
         emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
 
         QString targetBaseName(originFile.baseName());
-        targetBaseName.replace(QRegExp("^IMG_(\\d+)$"), "\\1");
+        if (targetBaseName.contains("__ver")) {
+            int lastIndex = lastName.section("_",-1).toInt();
+            targetBaseName = lastName.section("_",0,2) + "_" +QString::number(lastIndex+1) ;
+        }
+        targetBaseName.replace("IMG_", "");
+        targetBaseName.replace("_IMG", "");
+        targetBaseName.replace("_img", "");
+        targetBaseName.replace("Image", "");
+        targetBaseName.replace("img", "");
+        targetBaseName.replace("scan", "");
+        targetBaseName.replace("Scan", "");
+        targetBaseName.replace(QRegExp("(\\d)v$"), "\\1");
+        targetBaseName.replace(QRegExp("(\\d)_$"), "\\1");
+        targetBaseName.replace(QRegExp("(\\d)_z$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d+)_\\d+$"), "\\1");
+        targetBaseName.replace(QRegExp("^(\\d+)-\\d+$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d)$"), "00\\1");
         targetBaseName.replace(QRegExp("^(\\d{2})$"), "0\\1");
         targetBaseName.replace(QRegExp("0{3,}(\\d)$"), "00\\1");
         targetBaseName.replace(QRegExp("0{2,}(\\d{2})$"), "0\\1");
+        targetBaseName.replace(QRegExp("0{1,}(\\d{3})$"), "\\1");
         targetBaseName.replace(QRegExp("^\\d*_CE"), "CE");
         targetBaseName.replace(QRegExp("^\\d*_MJK"), "MJK");
-        targetBaseName+="."+originFile.completeSuffix();
+
+        if (!targetBaseName.contains(QRegExp("^\\d{3}$")) &&
+                !targetBaseName.contains("CE")&&
+                !targetBaseName.contains("MJK")) {
+            warningCnt++;
+        }
+
+        lastName = targetBaseName;
+        targetBaseName+="."+originFile.suffix();
         QString targetFilePath(originFile.absoluteDir().filePath(targetBaseName));
 
         if (targetFilePath!=originFile.absoluteFilePath()) {
@@ -261,11 +326,27 @@ int Standardiser::fileStandard(const QStringList &files)
             oldFiles.append(originFile.absoluteFilePath());
         }
     }
-    if (oldFiles.length()>0) {
-        emit writeLog(QString::fromLocal8Bit("┗━%1 / %2 序号标准化成功")
-                      .arg(compressCnt).arg(files.length()),
-                      LogType::INDEXLOG);
+
+    if (oldFiles.length()>0 || warningCnt>0) {
+        QString log;
+        int logType=4;
+        if(oldFiles.length()>0){
+            log += QString::fromLocal8Bit("┗━ %1 / %2 序号修改成功")
+                    .arg(compressCnt).arg(files.length());
+            logType = LogType::INDEXLOG;
+        }
+        if (warningCnt>0) {
+            if(!log.isEmpty()){
+                log.replace(QString::fromLocal8Bit("┗━"),QString::fromLocal8Bit("┣━"));
+                log+="\n                   ";
+            }
+            log += QString::fromLocal8Bit("┗━ %1 / %2 序号非标准")
+                    .arg(warningCnt).arg(files.length());
+            logType = LogType::WARNINGLOG;
+        }
+        emit writeLog(log,logType,QFileInfo(files[0]).absolutePath());
     }
+
     oldFilesDirs.append(oldFiles);
     newFilesDirs.append(newFiles);
     return compressCnt;
@@ -287,7 +368,10 @@ QStringList Standardiser::readInfo(const QString &name)
             parodyMap(result[4]);
         }
 
+        result[1].replace("、",", ");
+        result[2].replace("、",", ");
     }
+
     return result;
 }
 
@@ -415,7 +499,7 @@ QString &Standardiser::nameAnalysis(QString &name)
                 format = 3;
                 break;
             case 18:
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.indexOf("["),"()");
                 name.insert(name.indexOf("]"),"()");
                 name.insert(name.lastIndexOf("["),"()");
                 format = 1;
@@ -500,6 +584,7 @@ QString &Standardiser::stringReplacement(QString &name)
     name.replace(QString::fromLocal8Bit("（"), "(");
     name.replace(QString::fromLocal8Bit("）"), ")");
     name.replace("～", "~");
+    name.replace("  ", " ");
     name.replace("] ", "]");
     name.replace(" [", "[");
     name.replace(" (", "(");
@@ -507,8 +592,10 @@ QString &Standardiser::stringReplacement(QString &name)
     name.replace(QString::fromLocal8Bit("[DL版]"), "");
     name.replace(QString::fromLocal8Bit("[Digital]"), "");
     name.replace(QString::fromLocal8Bit("[無修正]"), "");
+    name.replace(QString::fromLocal8Bit("[无修正]"), "");
     name.replace(QString::fromLocal8Bit("(無修正)"), "");
     name.replace(QString::fromLocal8Bit("[中国語]"), "");
+    name.replace(QString::fromLocal8Bit("[中國語]"), "");
     name.replace(QString::fromLocal8Bit("(オリジナル)"), "");
     name.replace(QString::fromLocal8Bit("(Original)"), "");
     name.replace("(Various)", QString::fromLocal8Bit("(よろず)"));
@@ -522,16 +609,32 @@ QString &Standardiser::stringReplacement(QString &name)
     name.replace(QString::fromLocal8Bit("空気系★汉化"), QString::fromLocal8Bit("空気系☆漢化"));
     name.replace(QString::fromLocal8Bit("空気系汉化"), QString::fromLocal8Bit("空気系☆漢化"));
     name.replace(QString::fromLocal8Bit("空気系漢化"), QString::fromLocal8Bit("空気系☆漢化"));
-    name.replace("  ", " ");
+    name.replace(QRegExp("\\[MJK-\\d+-T\\d+\\]"), "");
+    name.replace(QRegExp("\\[CE_\\d+\\]"), "");
+    name.replace("()", "");
+    name.replace("[]", "");
     name = name.trimmed();
     qDebug() << "stringReplacement 1:";
     qDebug() << name;
     return name;
 }
 
+bool Standardiser::ifvalid(QString &name)
+{
+    int smallBlock=0;
+    int middleBlock=0;
+    for (QChar c : name) {
+        if(c=='(') smallBlock++;
+        if(c==')') smallBlock--;
+        if(c=='[') middleBlock++;
+        if(c==']') middleBlock--;
+        if(smallBlock<0||1<smallBlock||middleBlock<0||1<middleBlock) return false;
+    }
+    return true;
+}
+
 QString Standardiser::haveTranslators(QString &name)
 {
-    QString special;
     bool noTranslators=false;
     if (name.contains(QString::fromLocal8Bit("[中国翻訳]"))) {
         name.replace(QString::fromLocal8Bit("[中国翻訳]"), "");
@@ -544,45 +647,50 @@ QString Standardiser::haveTranslators(QString &name)
     int idx=name.section("[",0,0).indexOf(QString::fromLocal8Bit("★"));
     if (idx>-1){
         name.remove(idx,1);
-        special=QString::fromLocal8Bit("★");
-        return special;
+        return QString::fromLocal8Bit("★");
     }
 
     if (noTranslators == true){
-        special=QString::fromLocal8Bit("★");
-    } else {
-        special="";
+        return QString::fromLocal8Bit("★");
     }
-    return special;
+    return "";
 }
 
 QString Standardiser::ifLowQuality(QString &name, QString path)
 {
-    QString special;
     int idx=name.section("[",0,0).indexOf(QString::fromLocal8Bit("▼"));
     if (idx>-1){
         name.remove(idx,1);
-        special=QString::fromLocal8Bit("▼");
-        return special;
+        return QString::fromLocal8Bit("▼");
     }
 
     QStringList files=loadFiles(path);
-    int fileCnt=1;
+    int fileCnt=0;
     int lowCnt=0;
-    for(int i=0;i<files.length() && i<10;i++){
+    for(int i=2;i<files.length() && i<7;i++){
+        emit showMessage(files.at(i).section("/",-2,-1));
+
         fileCnt++;
         QImageReader reader(files.at(i));
         QSize sizeOfImage = reader.size();
+        if (sizeOfImage.width()<1) {
+            return "";
+        }
 
         qDebug() << sizeOfImage.width()<<"----->"<<path;
 
         if (sizeOfImage.width()<setting->WIDTH_THRESHOLD) {
             lowCnt++;
         }
+        if(fileCnt > 2 && fileCnt - lowCnt > 2){
+            return "";
+        }
+        if(fileCnt > 2 && lowCnt > 2){
+            return QString::fromLocal8Bit("▼");
+        }
     }
-    if(lowCnt*10/fileCnt>5)
-        special = QString::fromLocal8Bit("▼");
-    return special;
+
+    return "";
 }
 
 QString Standardiser::join(QStringList &component)

@@ -13,10 +13,22 @@
     <height>834</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
    <string/>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,1">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -26,64 +38,6 @@
          <string>目录设置</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>源头目录路径：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>目标目录路径：</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QLineEdit" name="lineEdit_2">
-               <property name="text">
-                <string>E:\Temporary\1Check\2Check</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_3">
-               <property name="text">
-                <string>E:\Temporary\新建文件夹</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QPushButton" name="pushButton_5">
-               <property name="text">
-                <string>选择路径</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_4">
-               <property name="text">
-                <string>选择路径</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
          <item row="2" column="0">
           <widget class="QSlider" name="horizontalSlider">
            <property name="inputMethodHints">
@@ -142,6 +96,73 @@
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>源头目录路径：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>目标目录路径：</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="DragLineEdit" name="lineEdit_2">
+               <property name="text">
+                <string>E:\Temporary\1Check\2Check</string>
+               </property>
+               <property name="cursorPosition">
+                <number>26</number>
+               </property>
+               <property name="dragEnabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="DragLineEdit" name="lineEdit_3">
+               <property name="text">
+                <string>E:\Temporary\新建文件夹</string>
+               </property>
+               <property name="dragEnabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButton_5">
+               <property name="text">
+                <string>选择路径</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_4">
+               <property name="text">
+                <string>选择路径</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
@@ -332,17 +353,17 @@
               <widget class="QComboBox" name="comboBox">
                <item>
                 <property name="text">
-                 <string>特别标示 [社团名称 (作者名)] 标题 (原作名) [译者]</string>
+                 <string>特别标示 [社团名 (作者名)] 标题 (原作名) [译者]</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>特别标示 (即卖会名称) [社团名称 (作者名)] 标题 (原作名) [译者] </string>
+                 <string>特别标示 (即卖会名) [社团名 (作者名)] 标题 (原作名) [译者] </string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>特别标示 [译者] (即卖会名称) [社团名称 (作者名)] 标题 (原作名) </string>
+                 <string>特别标示 [译者] (即卖会名) [社团名 (作者名)] 标题 (原作名) </string>
                 </property>
                </item>
               </widget>
@@ -541,41 +562,20 @@
         <height>500</height>
        </size>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
       <property name="autoScrollMargin">
        <number>16</number>
       </property>
       <property name="verticalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
-      <property name="movement">
-       <enum>QListView::Static</enum>
-      </property>
-      <property name="flow">
-       <enum>QListView::TopToBottom</enum>
-      </property>
-      <property name="isWrapping" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="resizeMode">
-       <enum>QListView::Fixed</enum>
-      </property>
-      <property name="layoutMode">
-       <enum>QListView::SinglePass</enum>
-      </property>
       <property name="spacing">
-       <number>3</number>
-      </property>
-      <property name="viewMode">
-       <enum>QListView::ListMode</enum>
-      </property>
-      <property name="batchSize">
-       <number>100</number>
+       <number>5</number>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
-      </property>
-      <property name="selectionRectVisible">
-       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -611,6 +611,7 @@
    <addaction name="action_4"/>
    <addaction name="actionasd"/>
    <addaction name="action_3"/>
+   <addaction name="action_6"/>
    <addaction name="action_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -619,7 +620,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/Archive manage.ico</normaloff>:/ico/Archive manage.ico</iconset>
    </property>
    <property name="text">
@@ -634,7 +635,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/Setting.ico</normaloff>:/ico/Setting.ico</iconset>
    </property>
    <property name="text">
@@ -652,7 +653,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/Finder.ico</normaloff>:/ico/Finder.ico</iconset>
    </property>
    <property name="text">
@@ -661,7 +662,7 @@
   </action>
   <action name="action_2">
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/TextEdit.ico</normaloff>:/ico/TextEdit.ico</iconset>
    </property>
    <property name="text">
@@ -670,7 +671,7 @@
   </action>
   <action name="action_3">
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/DigitalColor Meter.ico</normaloff>:/ico/DigitalColor Meter.ico</iconset>
    </property>
    <property name="text">
@@ -682,17 +683,56 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="icon.qrc">
+    <iconset>
      <normaloff>:/ico/iSync.ico</normaloff>:/ico/iSync.ico</iconset>
    </property>
    <property name="text">
     <string>有新内容</string>
    </property>
   </action>
+  <action name="action_6">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/ico/Battery.ico</normaloff>:/ico/Battery.ico</iconset>
+   </property>
+   <property name="text">
+    <string>赞助通道</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>复制</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>打开路径</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>复制完整目录路径</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>复制目录名</string>
+   </property>
+  </action>
+  <action name="action_11">
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="icon.qrc"/>
- </resources>
+ <customwidgets>
+  <customwidget>
+   <class>DragLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>custom/draglineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
  <connections/>
 </ui>

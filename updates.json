@@ -3,8 +3,14 @@
     "windows": {
       "open-url": "",
       "latest-version": "3.03",
-      "download-url": "https://github.com/Sandiagal/DoujinFix/releases/download/3.03/zh_CN.qm",
-      "changelog": "<h3>测试在线更新</h3><p><font color='#0000FF'>-1：新增了2种文件名标准化的格式。</font></p><p><font color='#0000FF'>-2：新增了用不同颜色表示不同处理结果的显示效果。</font></p><p><font color='#FF0000'>-1：修复了文件名标准化时的模式识别错误，使用更宽泛的识别标准。</font></p><p><font color='#FF0000'>-2：修复了拼接文件夹名称时特定状态下的格式错误。</font></p><p><font color='#800080'>-1：调整了文件名标准化时对空格符的处理，将连续的符号视为单一的符号。</font></p><p><font color='#800080'>-2：调整了程序初始化失败时的响应。</font></p>",
+      "download-url": "https://raw.githubusercontent.com/alex-spataru/QSimpleUpdater/master/tutorial/download/YesItWorks.jpg",
+      "changelog": "<h3>测试在线更新</h3><p>
+      <font color='#0000FF'>-1：新增了2种文件名标准化的格式。</font></p>
+      <p><font color='#0000FF'>-2：新增了用不同颜色表示不同处理结果的显示效果。</font></p>
+      <p><font color='#FF0000'>-1：修复了文件名标准化时的模式识别错误，使用更宽泛的识别标准。</font></p>
+      <p><font color='#FF0000'>-2：修复了拼接文件夹名称时特定状态下的格式错误。</font></p>
+      <p><font color='#800080'>-1：调整了文件名标准化时对空格符的处理，将连续的符号视为单一的符号。</font></p>
+      <p><font color='#800080'>-2：调整了程序初始化失败时的响应。</font></p>",
       "mandatory": false
     }
   }

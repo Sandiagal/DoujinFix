@@ -189,7 +189,7 @@ void Downloader::finished()
 void Downloader::openDownload()
 {
     if (!m_fileName.isEmpty())
-        QDesktopServices::openUrl(QUrl(m_downloadDir.absolutePath(), QUrl::TolerantMode));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(m_downloadDir.absolutePath()));
     else {
         QMessageBox::critical (this,
                                tr ("Error"),

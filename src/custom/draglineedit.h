@@ -18,27 +18,24 @@
  * You can contact us at sandiagal2525@gmail.com
 */
 
-#ifndef COMPRESSOR_H
-#define COMPRESSOR_H
+#ifndef DRAGLINEEDIT_H
+#define DRAGLINEEDIT_H
 
-#include "file/baseFile.h"
+#include <QLineEdit>
+#include <qevent.h>
 
-class Compressor : public BaseFile
+class DragLineEdit : public QLineEdit
 {
     Q_OBJECT
-public:
-    explicit Compressor(Setting *setting, QObject *parent = nullptr);
 
-    void start() override;
-    void revoke() override;
+public:
+    explicit DragLineEdit(QWidget *parent = nullptr);
+
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 private:
-    QVector<int> subimageCompression(const QString &path);
-
-signals:
-    void setDirBarValue(int value);
-    void setFileBarValue(int value);
-
 };
 
-#endif // COMPRESSOR_H
+#endif // DRAGLINEEDIT_H

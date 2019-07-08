@@ -1,4 +1,24 @@
-﻿#include "compressor.h"
+﻿/*
+ * The Doujinfix – a Qt-based batch arrangement software for Doujinshi that
+ * includes Doujinshi file name standardization and compressed image replacement.
+ * Copyright (C) 2019 Sandiagal
+ *
+ * This program is free software:
+ * you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at sandiagal2525@gmail.com
+*/
+
+#include "compressor.h"
 
 Compressor::Compressor(Setting *setting, QObject *parent):
     BaseFile(setting, parent)
@@ -8,6 +28,7 @@ Compressor::Compressor(Setting *setting, QObject *parent):
 
 void Compressor::start()
 {
+    emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (`·Д·)シ 开始压缩图像替换 ━━━━━━━━━━┓"),LogType::OKLOG);
     removeBack();
     originDirs.clear();
     originDirs=loadDirs(setting->ORIGIN_PATH);
@@ -22,13 +43,14 @@ void Compressor::start()
         compressCnts+=compressInfo.at(0);
         compressSizes+=compressInfo.at(1);
     }
-    emit writeLog(QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 压缩成功,节约体积 %3 MB ━━━━━━━━━━┛")
+    emit writeLog(QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 压缩成功，减少 %3 MB ━━━━━━━━━━┛")
                   .arg(compressCnts).arg(originDirs.length()).arg(compressSizes/1024),
                   LogType::OKLOG);
 }
 
 void Compressor::revoke()
 {
+    emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (‘_ゝ`) 撤销压缩图像替换 ━━━━━━━━━━┓"),LogType::OKLOG);
     int compressCnts=0;
 
     for(int i=0;i<oldFilesDirs.length();
@@ -57,9 +79,10 @@ void Compressor::revoke()
             }
         }
         compressCnts+=compressCnt;
-        emit writeLog(QString::fromLocal8Bit("%1 / %2 撤销成功\n%3")
+        emit writeLog(QString::fromLocal8Bit("%3\n           ┗━ %1 / %2 撤销成功")
                       .arg(compressCnt).arg(oldFilesDirs.at(i).length()).arg(dirName),
-                      LogType::REPLACELOG);
+                      LogType::REPLACELOG,
+                      QFileInfo(oldFilesDirs.at(i).at(0)).absolutePath());
     }
     emit writeLog(QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2 撤销成功 ━━━━━━━━━━┛")
                   .arg(compressCnts).arg(oldFilesDirs.length()),
@@ -110,36 +133,38 @@ QVector<int> Compressor::subimageCompression(const QString &path)
             } catch (std::exception &e) {
                 qDebug()<<e.what();
                 qDebug()<<"rename filed:"<<originFile.absoluteFilePath();
+                emit writeLog(QString("%1\n%2")
+                              .arg(originFile.absoluteFilePath()).arg(e.what()),
+                              LogType::IGNORELOG,
+                              originFile.absoluteFilePath());
             }
         }else {
             qDebug() <<"X compress ";
         }
     }
     if (compressCnt>0 || warningCnt>0) {
-        QString log;
-        int logType;
+        QString log(QFileInfo(path).fileName());
+        int logType=5;
         if(compressCnt>0){
             oldFilesDirs.append(oldFiles);
             newFilesDirs.append(newFiles);
-            log += QString::fromLocal8Bit("%1 / %2 压缩成功,节约体积 %3 MB\n")
+            log += QString::fromLocal8Bit("\n           ┗━ %1 / %2 压缩成功，减少 %3 MB")
                             .arg(compressCnt).arg(files.length())
                             .arg(compressSize/1024);
             logType = LogType::REPLACELOG;
         }
         if (warningCnt>0) {
-            if(log.size()>0)
-                log+="           ";
-            log += QString::fromLocal8Bit("%1 / %2 文件不存在\n")
+            log.replace(QString::fromLocal8Bit("┗━"),QString::fromLocal8Bit("┣━"));
+            log += QString::fromLocal8Bit("\n           ┗━ %1 / %2 文件不存在")
                             .arg(warningCnt).arg(files.length());
             logType = LogType::WARNINGLOG;
         }
-
-        log += QFileInfo(path).fileName();
-        emit writeLog(log,logType);
+        emit writeLog(log,logType,QFileInfo(path).absoluteFilePath());
     }else {
         emit writeLog(QString::fromLocal8Bit("无需修改\n%1")
                       .arg(QFileInfo(path).fileName()),
-                      LogType::IGNORELOG);
+                      LogType::IGNORELOG,
+                      QFileInfo(path).absoluteFilePath());
     }
     return QVector<int>{compressCnt,compressSize};
 }

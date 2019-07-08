@@ -18,27 +18,33 @@
  * You can contact us at sandiagal2525@gmail.com
 */
 
-#ifndef COMPRESSOR_H
-#define COMPRESSOR_H
+#include "draglineedit.h"
+#include <QFileInfo>
+#include <QMimeData>
 
-#include "file/baseFile.h"
-
-class Compressor : public BaseFile
+DragLineEdit::DragLineEdit(QWidget *parent)
+    : QLineEdit(parent)
 {
-    Q_OBJECT
-public:
-    explicit Compressor(Setting *setting, QObject *parent = nullptr);
+    setAcceptDrops(true);
+}
 
-    void start() override;
-    void revoke() override;
+void DragLineEdit::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
 
-private:
-    QVector<int> subimageCompression(const QString &path);
-
-signals:
-    void setDirBarValue(int value);
-    void setFileBarValue(int value);
-
-};
-
-#endif // COMPRESSOR_H
+void DragLineEdit::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> droppedUrls = event->mimeData()->urls();
+    int droppedUrlCnt = droppedUrls.size();
+    if (droppedUrlCnt>0) {
+        QString localPath = droppedUrls.back().toLocalFile();
+        QFileInfo fileInfo(localPath);
+        if(fileInfo.isDir()){
+            this->setText(fileInfo.absoluteFilePath());
+        }
+    }
+    event->acceptProposedAction();
+}
