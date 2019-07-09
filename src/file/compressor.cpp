@@ -67,7 +67,7 @@ void Compressor::revoke()
             QFileInfo targetFile(newFilesDirs.at(i).at(j));
             emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
             try {
-                QFile::rename(originFile.absoluteDir().filePath(originFile.fileName()), targetFile.absoluteFilePath());
+                QFile::rename(originFile.absoluteDir().filePath(targetFile.fileName()), targetFile.absoluteFilePath());
                 QFile::rename(backupsTargeDir.filePath(originFile.fileName()), originFile.absoluteFilePath());
                 qDebug() << QString::fromLocal8Bit("开始下方");
                 qDebug() << originFile.absoluteDir().filePath(targetFile.fileName())<<"----->"<<targetFile.absoluteFilePath();
@@ -124,7 +124,7 @@ QVector<int> Compressor::subimageCompression(const QString &path)
         if (100*(originFile.size()-targetFile.size())/originFile.size()>setting->SIZE_THRESHOLD) {
             try {
                 QFile::rename(originFile.absoluteFilePath(), backupsTargeDir.filePath(originFile.fileName()));
-                QFile::rename(targetFile.absoluteFilePath(), originFile.absoluteDir().filePath(originFile.fileName()));
+                QFile::rename(targetFile.absoluteFilePath(), originFile.absoluteDir().filePath(targetFile.fileName()));
                 compressCnt++;
                 compressSize+=(originFile.size()-targetFile.size())/1024;
                 oldFiles.append(originFile.absoluteFilePath());

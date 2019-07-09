@@ -282,18 +282,19 @@ int Standardiser::fileStandard(const QStringList &files)
             int lastIndex = lastName.section("_",-1).toInt();
             targetBaseName = lastName.section("_",0,2) + "_" +QString::number(lastIndex+1) ;
         }
-        targetBaseName.replace("IMG_", "");
-        targetBaseName.replace("_IMG", "");
-        targetBaseName.replace("_img", "");
-        targetBaseName.replace("Image", "");
-        targetBaseName.replace("img", "");
-        targetBaseName.replace("scan", "");
-        targetBaseName.replace("Scan", "");
+        targetBaseName.replace("^IMG_", "");
+        targetBaseName.replace("^page_", "");
+        targetBaseName.replace("^Image", "");
+        targetBaseName.replace("^img", "");
+        targetBaseName.replace("^scan", "");
+        targetBaseName.replace("^Scan", "");
         targetBaseName.replace(QRegExp("(\\d)v$"), "\\1");
         targetBaseName.replace(QRegExp("(\\d)_$"), "\\1");
         targetBaseName.replace(QRegExp("(\\d)_z$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d+)_\\d+$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d+)-\\d+$"), "\\1");
+        targetBaseName.replace(QRegExp("^(\\d+)_IMG\\d+$"), "\\1");
+        targetBaseName.replace(QRegExp("^(\\d+)_img\\d+$"), "\\1");
         targetBaseName.replace(QRegExp("^(\\d)$"), "00\\1");
         targetBaseName.replace(QRegExp("^(\\d{2})$"), "0\\1");
         targetBaseName.replace(QRegExp("0{3,}(\\d)$"), "00\\1");
