@@ -63,7 +63,7 @@ DoujinFix 是一款基于 Qt 的批量整理同人志的软件，包括同人志
 
 DoujinFix 基于跨平台的 C++ 应用程式框架 [Qt](https://www.qt.io/) 开发，并修改了以下优秀的代码模块用以定制：
 
-  - 配置管理，日志管理：原作者拉斐尔之翼的等模块用以定制软件；
+  - 配置管理，日志管理：原作者拉斐尔之翼；
   - 在线更新：原作者 alex-spataru。
 
 感谢 Github 里的好友对 DoujinFix 的编写提供众多支持，拉斐尔之翼，alex-spataru，魂跃，Argh等。
