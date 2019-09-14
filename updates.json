@@ -2,8 +2,8 @@
   "updates": {
     "windows": {
       "open-url": "",
-      "latest-version": "3.03",
-      "download-url": "https://github.com/Sandiagal/DoujinFix/releases/download/3.03/017.jpg",
+      "latest-version": "3.04",
+      "download-url": "https://github.com/Sandiagal/DoujinFix/releases/download/v3.04/DoujinFix_installer_v3.04.exe",
       "changelog": "<h3>一堆优化</h3>
       <p>目前自动更新的链接重定向功能出现故障，您可能需要手动下载更新文件！</p>
       <p><font color='#0000FF'>-1：新增了“标示过滤”选项，可以保留类似于“中国翻訳”、“無修正”等标示</font></p>
