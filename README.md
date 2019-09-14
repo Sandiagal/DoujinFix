@@ -5,8 +5,7 @@
 [![LICENSE](https://img.shields.io/github/license/Sandiagal/DoujinFix.svg?style=flat-square)](https://github.com/Sandiagal/DoujinFix/blob/master/LICENSE)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/bafffe84e9ac4c8dbb085fbf212b7097)](https://www.codacy.com/app/Sandiagal/DoujinFix?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sandiagal/DoujinFix&amp;utm_campaign=Badge_Grade)
 ![60+% C++](https://img.shields.io/github/languages/top/Sandiagal/DoujinFix.svg?style=flat-square)
-
-[download-badge]: https://img.shields.io/github/downloads/Sandiagal/DoujinFix/total.svg?style=flat-square "Download status"
+![Download status](https://img.shields.io/github/downloads/Sandiagal/DoujinFix/total.svg?style=flat-square)
 
 ![main](screenshots/main.png)
 
