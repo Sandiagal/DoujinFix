@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_2->setText(setting->ORIGIN_PATH);
     ui->lineEdit_3->setText(setting->TARGET_PATH);
     ui->checkBox->setChecked(setting->INDEX_FIX);
+    ui->checkBox_5->setChecked(setting->LABEL_FILTER);
     ui->checkBox_2->setChecked(setting->PARODY_MAP);
     ui->checkBox_3->setChecked(setting->UNKNOWN_TRANSLATOR);
     ui->checkBox_4->setChecked(setting->LOW_QUALITY);
@@ -60,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logModel->DelOldLog(7);
     connect(logModel, &LogListModel::doneWriting, ui->listView, &QListView::scrollToBottom);
     connect(ui->listView, &QListView::customContextMenuRequested, this, &MainWindow::context_menu_on_listView);
-    logCnt = QVector<int>(4,0);
+    logCnt = QVector<int>(4, 0);
 
     //名称标准化
     standardiser = new Standardiser(setting);
@@ -103,15 +104,16 @@ MainWindow::~MainWindow()
 {
     standardiserThread.quit();
     standardiserThread.wait();
-    if(standardiser) delete standardiser;
+    if (standardiser) delete standardiser;
 
     compressorThread.quit();
     compressorThread.wait();
-    if(compressor) delete compressor;
+    if (compressor) delete compressor;
 
     setting->ORIGIN_PATH=ui->lineEdit_2->text();
     setting->TARGET_PATH=ui->lineEdit_3->text();
     setting->INDEX_FIX=ui->checkBox->isChecked();
+    setting->LABEL_FILTER=ui->checkBox_5->isChecked();
     setting->PARODY_MAP=ui->checkBox_2->isChecked();
     setting->NAMING_STYLE=ui->comboBox->currentIndex();
     setting->SIZE_THRESHOLD=ui->spinBox->value();
@@ -119,7 +121,6 @@ MainWindow::~MainWindow()
     delete setting;
 
     delete ui;
-
     logModel->FlushLogFile();
     emit writeLog(QString::fromLocal8Bit("系统关闭"), LogType::OKLOG);
     delete logModel;
@@ -132,6 +133,7 @@ void MainWindow::standardiserGroupEnable(bool status)
     ui->lineEdit_2->setEnabled(status);
     ui->comboBox->setEnabled(status);
     ui->checkBox->setEnabled(status);
+    ui->checkBox_5->setEnabled(status);
     ui->checkBox_2->setEnabled(status);
     ui->checkBox_3->setEnabled(status);
     ui->checkBox_4->setEnabled(status);
@@ -149,46 +151,40 @@ void MainWindow::compressorGroupEnable(bool status)
 //名称标准化
 void MainWindow::on_pushButton_clicked()
 {
-    logCnt[0]=logModel->logList.count();
-    logCnt[2]=0;
-    logCnt[3]=0;
+    logCnt[0] = logModel->logList.count();
+    logCnt[2] = 0;
+    logCnt[3] = 0;
 
     emit startStandardiser(0);
 
     standardiserGroupEnable(false);
-
     ui->pushButton_6->setEnabled(false);
-
     ui->pushButton_3->setEnabled(false);
 }
 
 //撤销 名称标准化
 void MainWindow::on_pushButton_2_clicked()
 {
-    logCnt[0]=logModel->logList.count();
-    logCnt[2]=0;
-    logCnt[3]=0;
+    logCnt[0] = logModel->logList.count();
+    logCnt[2] = 0;
+    logCnt[3] = 0;
 
     emit startStandardiser(1);
 
     ui->pushButton_2->setEnabled(false);
-
     ui->pushButton_3->setEnabled(false);
 }
 
 void MainWindow::standardiserDone(int SR)
 {
-    logCnt[1]=logModel->logList.count();
+    logCnt[1] = logModel->logList.count();
 
-    if(SR==0){
+    if (SR == 0){
         ui->pushButton_2->setEnabled(true);
-
         ui->pushButton_3->setEnabled(true);
-    }else{
+    } else {
         standardiserGroupEnable(true);
-
         compressorGroupEnable(true);
-
         ui->pushButton_3->setEnabled(true);
     }
 }
@@ -196,42 +192,36 @@ void MainWindow::standardiserDone(int SR)
 //压缩图像替换
 void MainWindow::on_pushButton_7_clicked()
 {
-    logCnt[2]=logModel->logList.count();
+    logCnt[2] = logModel->logList.count();
 
     emit startCompressor(0);
 
     compressorGroupEnable(false);
-
     ui->pushButton_2->setEnabled(false);
-
     ui->pushButton_3->setEnabled(false);
 }
 
 //撤销 压缩图像替换
 void MainWindow::on_pushButton_6_clicked()
 {
-    logCnt[2]=logModel->logList.count();
+    logCnt[2] = logModel->logList.count();
 
     emit startCompressor(1);
 
     ui->pushButton_6->setEnabled(false);
-
     ui->pushButton_3->setEnabled(false);
 }
 
 void MainWindow::compressorDone(int SR)
 {
-    logCnt[3]=logModel->logList.count();
+    logCnt[3] = logModel->logList.count();
 
-    if (SR==0) {
+    if (SR == 0) {
         ui->pushButton_6->setEnabled(true);
-
         ui->pushButton_3->setEnabled(true);
     } else {
         compressorGroupEnable(true);
-
         standardiserGroupEnable(true);
-
         ui->pushButton_3->setEnabled(true);
     }
 }
@@ -244,9 +234,7 @@ void MainWindow::on_pushButton_5_clicked()
                                                     ui->lineEdit_2->text(),
                                                     QFileDialog::ShowDirsOnly |
                                                     QFileDialog::DontResolveSymlinks);
-    if(!dir.isEmpty()){
-        ui->lineEdit_2->setText(dir);
-    }
+    if (!dir.isEmpty()) ui->lineEdit_2->setText(dir);
 }
 
 //选择路径 target
@@ -257,25 +245,18 @@ void MainWindow::on_pushButton_4_clicked()
                                                     ui->lineEdit_3->text(),
                                                     QFileDialog::ShowDirsOnly|
                                                     QFileDialog::DontResolveSymlinks);
-    if(!dir.isEmpty()){
-        ui->lineEdit_3->setText(dir);
-    }
+    if (!dir.isEmpty()) ui->lineEdit_3->setText(dir);
 }
 
 //重开
 void MainWindow::on_pushButton_3_clicked()
 {
-    logCnt = QVector<int>(4,0);
-
+    logCnt = QVector<int>(4, 0);
     compressorGroupEnable(true);
-
     standardiserGroupEnable(true);
-
     ui->pushButton_6->setEnabled(false);
     ui->pushButton_2->setEnabled(false);
-
     ui->pushButton_3->setEnabled(false);
-
     ui->progressBar->setValue(0);
     ui->progressBar_3->setValue(0);
     ui->progressBar_4->setValue(0);
@@ -332,16 +313,16 @@ void MainWindow::on_action_2_triggered()
                 "并修改了以下优秀的代码模块用以定制：</p>"
                 "<p>-配置管理，日志管理：原作者拉斐尔之翼的等模块用以定制软件；</p>"
                 "<p>-在线更新：原作者 alex-spataru。</p>"
-                "<p>感谢 Github 里的好友对 DoujinFix 的编写提供众多支持，拉斐尔之翼，alex-spataru，魂跃，Argh等。</p>"
+                "<p>感谢 Github 里的好友对 DoujinFix 的编写提供众多支持，拉斐尔之翼，alex-spataru，魂跃，Argh 等。</p>"
                 "<p>感谢所有使用和支持 DoujinFix 的网友。</p>"
                 "<h3>声明和协议</h3>"
                 "<p>版权所有 (C) 2019 Sandiagal</p>"
-                "<p>本程序是自由软件，您可以遵照自由软件基金会 ( Free Software Foundation ) "
-                "出版的 GNU 通用公共许可证条款 ( GNU General Public License ) 第3版或者任一更新版本的前提下"
+                "<p>本程序是自由软件，您可以遵照自由软件基金会 (Free Software Foundation) "
+                "出版的 GNU 通用公共许可证条款 (GNU General Public License) 第 3 版或者任一更新版本的前提下"
                 "修改和重新发布这一程序。</p>"
                 "<p>发布这一程序的目的是希望它有用，但没有任何担保。"
                 "甚至没有适合特定目的而隐含的担保。更详细的情况请参阅 GNU 通用公共许可证。</p>"
-                "<p>你理当已收到一份GNU通用公共许可协议的副本，如果没有，请查阅"
+                "<p>你理当已收到一份 GNU 通用公共许可协议的副本，如果没有，请查阅 "
                 "<a href=\"https://www.gnu.org/licenses/\">https://www.gnu.org/licenses/</a>。</p>"
                 ).arg(APP_VERSION);
     QMessageBox *msgBox = new QMessageBox(this);
@@ -351,8 +332,7 @@ void MainWindow::on_action_2_triggered()
     msgBox->setInformativeText(translatedTextAboutQtText);
 
     QPixmap pm(QLatin1String(":/ico/Sandiagal.ico"));
-    if (!pm.isNull())
-        msgBox->setIconPixmap(pm);
+    if (!pm.isNull()) msgBox->setIconPixmap(pm);
 
     msgBox->setDefaultButton(msgBox->addButton(QMessageBox::Ok));
     msgBox->show();
@@ -361,62 +341,68 @@ void MainWindow::on_action_2_triggered()
 //源头目录路径改变
 void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
 {
-    setting->ORIGIN_PATH=arg1;
+    setting->ORIGIN_PATH = arg1;
 }
 
 //目标目录路径改变
 void MainWindow::on_lineEdit_3_textChanged(const QString &arg1)
 {
-    setting->TARGET_PATH=arg1;
+    setting->TARGET_PATH = arg1;
 }
 
 //处理延迟改变
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-    setting->PROCESS_DELAY=value;
+    setting->PROCESS_DELAY = value;
+}
+
+//标示过滤改变
+void MainWindow::on_checkBox_5_stateChanged(int arg1)
+{
+    setting->LABEL_FILTER = arg1;
 }
 
 //原作映射改变
 void MainWindow::on_checkBox_2_stateChanged(int arg1)
 {
-    setting->PARODY_MAP=arg1;
+    setting->PARODY_MAP = arg1;
 }
 
 //序号优化改变
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
-    setting->INDEX_FIX=arg1;
+    setting->INDEX_FIX = arg1;
 }
 
 //未知译者改变
 void MainWindow::on_checkBox_3_stateChanged(int arg1)
 {
-    setting->UNKNOWN_TRANSLATOR=arg1;
+    setting->UNKNOWN_TRANSLATOR = arg1;
 }
 
 //低质图像改变
 void MainWindow::on_checkBox_4_stateChanged(int arg1)
 {
-    setting->LOW_QUALITY=arg1;
+    setting->LOW_QUALITY = arg1;
     ui->spinBox_2->setEnabled(arg1);
 }
 
 //命名格式改变
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
-    setting->NAMING_STYLE=index;
+    setting->NAMING_STYLE = index;
 }
 
 //容量阈值改变
 void MainWindow::on_spinBox_valueChanged(int arg1)
 {
-    setting->SIZE_THRESHOLD=arg1;
+    setting->SIZE_THRESHOLD = arg1;
 }
 
 //宽度阈值改变
 void MainWindow::on_spinBox_2_valueChanged(int arg1)
 {
-    setting->WIDTH_THRESHOLD=arg1;
+    setting->WIDTH_THRESHOLD = arg1;
 }
 
 // 更新按钮
@@ -429,37 +415,34 @@ void MainWindow::on_action_5_triggered()
 void MainWindow::context_menu_on_listView(const QPoint &pos)
 {
     QPoint globalpos = ui->listView->mapToGlobal(pos);
-
     QMenu contextMenu;
-
     QModelIndex pointedItem = ui->listView->indexAt(pos);
     if(pointedItem.isValid()) {
         QString log = pointedItem.data().toString();
-        qDebug()<<logModel->logCopy[pointedItem.row()];
+        qDebug() << logModel->logCopy[pointedItem.row()];
         contextMenu.addAction(ui->action_7);
         logRow = pointedItem.row();
 
-        if (log[1]==QString::fromLocal8Bit("序")||
-                log[1]==QString::fromLocal8Bit("名")||
-                log[1]==QString::fromLocal8Bit("替")||
-                log[1]==QString::fromLocal8Bit("忽")||
-                log[1]==QString::fromLocal8Bit("错")||
-                log[1]==QString::fromLocal8Bit("警")) {
+        if (log[1] == QString::fromLocal8Bit("序") ||
+                log[1] == QString::fromLocal8Bit("名") ||
+                log[1] == QString::fromLocal8Bit("替") ||
+                log[1] == QString::fromLocal8Bit("忽") ||
+                log[1] == QString::fromLocal8Bit("错") ||
+                log[1] == QString::fromLocal8Bit("警")) {
 
-            if ( (logCnt[0]<logRow && logRow<logCnt[1]) ||
-                  (logCnt[2]<logRow && logRow<logCnt[3]) ) {
+            if ( (logCnt[0] < logRow && logRow < logCnt[1]) ||
+                 (logCnt[2] < logRow && logRow < logCnt[3]) ) {
                 contextMenu.addAction(ui->action_10);
                 contextMenu.addAction(ui->action_9);
                 contextMenu.addSeparator();
                 contextMenu.addAction(ui->action_11);
                 contextMenu.addAction(ui->action_8);
-            }else {
+            } else {
                 contextMenu.addSeparator();
                 contextMenu.addAction(new QAction(QString::fromLocal8Bit("日志已过期")));
             }
             logString = logModel->logCopy[logRow];
         }
-
         contextMenu.exec(globalpos);
     }
 }
@@ -487,8 +470,7 @@ void MainWindow::on_action_6_triggered()
     msgBox->setWindowTitle(QString::fromLocal8Bit("您的赞助是我们前进的动力"));
 
     QPixmap pm(QLatin1String(":/ico/Receipt.ico"));
-    if (!pm.isNull())
-        msgBox->setIconPixmap(pm);
+    if (!pm.isNull()) msgBox->setIconPixmap(pm);
 
     msgBox->setDefaultButton(msgBox->addButton(QMessageBox::Ok));
     msgBox->show();
@@ -503,7 +485,7 @@ void MainWindow::on_action_7_triggered()
 // 打开路径
 void MainWindow::on_action_8_triggered()
 {
-    logString.replace("/","\\");
+    logString.replace("/", "\\");
     QStringList args;
     args << "/select," << QDir::toNativeSeparators(logString);
     QProcess::startDetached("explorer", args);
@@ -518,7 +500,7 @@ void MainWindow::on_action_9_triggered()
 // 复制目录名
 void MainWindow::on_action_10_triggered()
 {
-    QApplication::clipboard()->setText(logString.section("/",-1));
+    QApplication::clipboard()->setText(logString.section("/", -1));
 }
 
 // 打开

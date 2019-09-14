@@ -5,12 +5,12 @@
       "latest-version": "3.03",
       "download-url": "https://github.com/Sandiagal/DoujinFix/releases/download/3.03/017.jpg",
       "changelog": "<h3>一堆优化</h3>
-      <p>目前自动更新的链接重定向功能出现故障，您可能需要手动下载更新文件</p>
-      <p><font color='#0000FF'>-1：新增了对“[全彩]”的标示的删除。。</font></p>
-      <p><font color='#0000FF'>-2：新增了对“～”、“！”等全角符号的调整。</font></p>
-      <p><font color='#0000FF'>-3：新增了对FF、DQ等长系列原作的版本号的识别。</font></p>
-      <p><font color='#0000FF'>-4：新增了在序号优化中括号、先后缀、多个序号的处理。</font></p>
-      <p><font color='#0000FF'>-5：新增了在序号优化中对不同译者的特殊格式的处理。</font></p>
+      <p>目前自动更新的链接重定向功能出现故障，您可能需要手动下载更新文件！</p>
+      <p><font color='#0000FF'>-1：新增了“标示过滤”选项，可以保留类似于“中国翻訳”、“無修正”等标示</font></p>
+      <p><font color='#0000FF'>-2：新增了对“～”、“！”等全角符号的调整</font></p>
+      <p><font color='#0000FF'>-3：新增了对FF、DQ等长系列原作的版本号的识别</font></p>
+      <p><font color='#0000FF'>-4：新增了在序号优化中括号、先后缀、多个序号的处理</font></p>
+      <p><font color='#0000FF'>-5：新增了在序号优化中对不同译者的特殊格式的处理</font></p>
       <p><font color='#FF0000'></font></p>
       <p><font color='#800080'></font></p>",
       "mandatory": false

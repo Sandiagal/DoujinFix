@@ -30,21 +30,17 @@ DragLineEdit::DragLineEdit(QWidget *parent)
 
 void DragLineEdit::dragEnterEvent(QDragEnterEvent *event)
 {
-    if(event->mimeData()->hasUrls()) {
-        event->acceptProposedAction();
-    }
+    if (event->mimeData()->hasUrls()) event->acceptProposedAction();
 }
 
 void DragLineEdit::dropEvent(QDropEvent *event)
 {
     QList<QUrl> droppedUrls = event->mimeData()->urls();
     int droppedUrlCnt = droppedUrls.size();
-    if (droppedUrlCnt>0) {
+    if (droppedUrlCnt > 0) {
         QString localPath = droppedUrls.back().toLocalFile();
         QFileInfo fileInfo(localPath);
-        if(fileInfo.isDir()){
-            this->setText(fileInfo.absoluteFilePath());
-        }
+        if (fileInfo.isDir()) this->setText(fileInfo.absoluteFilePath());
     }
     event->acceptProposedAction();
 }

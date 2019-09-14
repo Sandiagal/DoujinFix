@@ -46,7 +46,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Setting *setting = new Setting();
-    LogListModel *logModel =new LogListModel(this, 500);
+    LogListModel *logModel = new LogListModel(this, 500);
     Standardiser *standardiser;
     Compressor *compressor;
     QThread standardiserThread, compressorThread;
@@ -64,7 +64,7 @@ private:
 signals:
     void startStandardiser(int SR);
     void startCompressor(int SR);
-    void writeLog(QString content, int type=1, const QString &copy="");
+    void writeLog(QString content, int type = 1, const QString &copy = "");
 
 private slots:
     void on_pushButton_clicked();
@@ -103,6 +103,7 @@ private slots:
     void on_action_10_triggered();
     void on_action_11_triggered();
 
+    void on_checkBox_5_stateChanged(int arg1);
 };
 
 #endif // MAINWINDOW_H

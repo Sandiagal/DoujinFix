@@ -9,7 +9,7 @@ QT       += core gui widgets
 TARGET = DoujinFix
 TEMPLATE = app
 
-VERSION = 3.03
+VERSION = 3.04
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

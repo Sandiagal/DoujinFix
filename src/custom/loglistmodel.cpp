@@ -45,41 +45,36 @@ int LogListModel::rowCount(const QModelIndex &parent) const
 
 QVariant LogListModel::data(const QModelIndex &index, int role) const
 {
-    if(!index.isValid())
-        return QVariant();
-
-    if(index.row() >= logList.size())
-        return QVariant();
-
-    if(role == Qt::DisplayRole)
-        return logList.at(index.row());
+    if(!index.isValid()) return QVariant();
+    if(index.row() >= logList.size()) return QVariant();
+    if(role == Qt::DisplayRole) return logList.at(index.row());
 
     if(role == Qt::DecorationRole)
     {
-        QPixmap icon(10,10);
+        QPixmap icon(10, 10);
         switch (logTypeList.at(index.row()))
         {
         case LogType::OKLOG:
-            icon.fill(QColor(0,0,255));
+            icon.fill(QColor(0, 0, 255));
             break;
         case LogType::ERRORLOG:
-            icon.fill(QColor(255,0,0));
+            icon.fill(QColor(255, 0, 0));
             break;
         case LogType::IGNORELOG:
-            icon.fill(QColor(192,192,192));
+            icon.fill(QColor(192, 192, 192));
             break;
         case LogType::NAMELOG:
-            icon.fill(QColor(0,255,128));
+            icon.fill(QColor(0, 255, 128));
             break;
         case LogType::INDEXLOG:
-            icon.fill(QColor(192,0,255));
+            icon.fill(QColor(192, 0, 255));
             break;
         case LogType::REPLACELOG:
-            icon.fill(QColor(0,192,128));
+            icon.fill(QColor(0, 192, 128));
             break;
         case LogType::WARNINGLOG:
         default:
-            icon.fill(QColor(255,128,0));
+            icon.fill(QColor(255, 128, 0));
             break;
         }
 
@@ -95,9 +90,7 @@ void LogListModel::WriteLog(QString string, int type, QString copy)
     int tmpLen = logList.count();
 
     beginInsertRows(QModelIndex(), tmpLen, tmpLen);
-    switch (type)
-    {
-
+    switch (type) {
     case LogType::OKLOG:
         string.prepend(QString::fromLocal8Bit("[完成] "));
         break;
@@ -121,6 +114,7 @@ void LogListModel::WriteLog(QString string, int type, QString copy)
         string.prepend(QString::fromLocal8Bit("[警告] "));
         break;
     }
+
     logList.push_back(string);
     logCopy.push_back(copy);
     logTypeList.push_back(type);
@@ -128,8 +122,7 @@ void LogListModel::WriteLog(QString string, int type, QString copy)
     QString tmpstr = QDateTime::currentDateTime().toString();
     endInsertRows();
 
-    if(logList.count()>=m_LogQueThreshold)
-        FlushLogFile();
+    if (logList.count() >= m_LogQueThreshold) FlushLogFile();
 
     emit doneWriting();
 }
@@ -137,42 +130,34 @@ void LogListModel::WriteLog(QString string, int type, QString copy)
 void LogListModel::DelOldLog(int delDate)
 {
     QDate st = QDate::currentDate();
-    if(st.day() > delDate)
-        st.setDate(st.year(), st.month(), st.day() - delDate);
+    if (st.day() > delDate) st.setDate(st.year(), st.month(), st.day() - delDate);
     QString logFile = QString::asprintf("%04d%02d%02d.log", st.year(), st.month(), st.day());
 
     QDir dir("syslog");
     QFile fileCtrl;
     QStringList logFileEntries = dir.entryList(QStringList("*.log"),
                                                QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-    for(auto itr = logFileEntries.begin(); itr!=logFileEntries.end(); ++itr)
-    {
-        if((*itr)<logFile)
-        {
-            fileCtrl.remove(QDir::cleanPath("syslog/"+(*itr)));
-        }
+    for (auto itr = logFileEntries.begin(); itr!=logFileEntries.end(); ++itr) {
+        if ((*itr) < logFile) fileCtrl.remove(QDir::cleanPath("syslog/" + (*itr)));
     }
 }
 
 void LogListModel::FlushLogFile(bool isExiting)
 {
     QDir dir;
-    if(!dir.exists("syslog"))
-        dir.mkdir("syslog");
+    if (!dir.exists("syslog")) dir.mkdir("syslog");
 
     QDate st = QDate::currentDate();
     QString logFile = QString::asprintf("syslog/%04d%02d%02d.log", st.year(), st.month(), st.day());
 
     QFile file(QDir::cleanPath(logFile));
-    if(file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-    {
+    if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text)) {
         QTextStream out(&file);
         out.setCodec("UTF-8");
         out.setGenerateByteOrderMark(true);
 
         beginRemoveRows(QModelIndex(), 0, logList.count() - 1);
-        while (!logList.isEmpty())
-        {
+        while (!logList.isEmpty()) {
             out << logTimeList.first() << " " << logList.first() << endl;
             logList.pop_front();
             logCopy.pop_front();
@@ -181,7 +166,7 @@ void LogListModel::FlushLogFile(bool isExiting)
         }
         endRemoveRows();
 
-        if(isExiting) out << QString::fromLocal8Bit("----- 程序退出 -----") <<endl<<endl;
+        if (isExiting) out << QString::fromLocal8Bit("----- 程序退出 -----") <<endl<<endl;
 
         file.close();
     }

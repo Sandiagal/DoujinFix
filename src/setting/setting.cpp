@@ -37,6 +37,7 @@ void Setting::loadSetting()
     TARGET_PATH=settings.value("TARGET_PATH", "D:/path/to/target").toString();
     PROCESS_DELAY=settings.value("PROCESS_DELAY", 5).toInt();
     INDEX_FIX=settings.value("INDEX_FIX", true).toBool();
+    LABEL_FILTER=settings.value("LABEL_FILTER", true).toBool();
     PARODY_MAP=settings.value("PARODY_MAP", true).toBool();
     UNKNOWN_TRANSLATOR=settings.value("UNKNOWN_TRANSLATOR", true).toBool();
     LOW_QUALITY=settings.value("LOW_QUALITY", true).toBool();
@@ -53,22 +54,20 @@ void Setting::loadSetting()
     }
     QTextStream in(&file);
     in.setCodec("UTF-8"); // change the file codec to UTF-8.
-    while(!in.atEnd())
+    while (!in.atEnd())
     {
         QString reciveName = in.readLine();
-        if(in.atEnd()){
-            qDebug() << "Not plural lines in nameMap.txt";
-        }
+        if (in.atEnd()) qDebug() << "Not plural lines in nameMap.txt";
         QString standardName = in.readLine();
         NAME_MAP->insert(reciveName,standardName);
     }
     file.close();
 
-//    QMapIterator<QString, QString> i(*NAME_MAP);
-//    while (i.hasNext()) {
-//        i.next();
-//        qDebug() << i.key() << ": " << i.value();
-//    }
+    //    QMapIterator<QString, QString> i(*NAME_MAP);
+    //    while (i.hasNext()) {
+    //        i.next();
+    //        qDebug() << i.key() << ": " << i.value();
+    //    }
 
     emit writeLog(QString::fromLocal8Bit("读取配置成功"), LogType::OKLOG);
 }
@@ -79,6 +78,7 @@ void Setting::saveSetting()
     settings.setIniCodec("UTF-8");
     settings.setValue("ORIGIN_PATH", ORIGIN_PATH);
     settings.setValue("TARGET_PATH", TARGET_PATH);
+    settings.setValue("LABEL_FILTER", LABEL_FILTER);
     settings.setValue("PROCESS_DELAY", PROCESS_DELAY);
     settings.setValue("INDEX_FIX", INDEX_FIX);
     settings.setValue("PARODY_MAP", PARODY_MAP);

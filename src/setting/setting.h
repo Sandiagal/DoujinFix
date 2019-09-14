@@ -34,6 +34,7 @@ public:
     QString TARGET_PATH;
     int PROCESS_DELAY;
     bool INDEX_FIX;
+    bool LABEL_FILTER;
     bool PARODY_MAP;
     bool UNKNOWN_TRANSLATOR;
     bool LOW_QUALITY;
@@ -46,7 +47,7 @@ public:
     void saveSetting();
 
 signals:
-     void writeLog(QString content, int type=1, const QString &copy="");
+     void writeLog(QString content, int type = 1, const QString &copy = "");
 };
 
 #endif // SETTING_H

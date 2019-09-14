@@ -20,7 +20,7 @@
 
 #include "baseFile.h"
 
-BaseFile::BaseFile(Setting *setting, QObject *parent) : QObject(parent),setting(setting)
+BaseFile::BaseFile(Setting *setting, QObject *parent) : QObject(parent), setting(setting)
 {
     removeBack();
 }
@@ -29,11 +29,7 @@ const QStringList BaseFile::loadDirs(const QString & path)
 {
     QStringList dirs;
     QDirIterator it(path, QDir::Dirs|QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
-    while (it.hasNext())
-    {
-        dirs.append(it.next());
-        //qDebug() << dirs.back();
-    }
+    while (it.hasNext()) dirs.append(it.next());
     return dirs;
 }
 
@@ -42,11 +38,7 @@ const QStringList BaseFile::loadFiles(const QString &path)
     QStringList files;
     QDirIterator it(path, QStringList() << "*.bmp"<< "*.jpg"<< "*.fpeg"<< "*.png",
                     QDir::Files, QDirIterator::NoIteratorFlags);
-    while (it.hasNext())
-    {
-        files.append(it.next());
-        //        qDebug() << files.back();
-    }
+    while (it.hasNext()) files.append(it.next());
     return files;
 }
 
@@ -59,11 +51,11 @@ void BaseFile::removeBack()
 
 void BaseFile::run(int SR)
 {
-    if(!algLock.tryLock()) return;
-    if (SR==0) {
+    if (!algLock.tryLock()) return;
+    if (SR == 0) {
         start();
         emit workDone(SR);
-    }else {
+    } else {
         revoke();
         emit workDone(SR);
     }

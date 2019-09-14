@@ -55,8 +55,8 @@ private:
     QMutex algLock;
 
 signals:
-    void writeLog(const QString &content, int type=1, const QString &copy="");
-    void showMessage(const QString &message, int timeout=3000);
+    void writeLog(const QString &content, int type = 1, const QString &copy = "");
+    void showMessage(const QString &message, int timeout = 3000);
     void workDone(int SR);
 
 };

@@ -31,7 +31,7 @@ class Standardiser : public BaseFile
 {
     Q_OBJECT
 public:
-    explicit Standardiser(Setting *setting, QObject *parent=nullptr);
+    explicit Standardiser(Setting *setting, QObject *parent = nullptr);
 
     void start() override;
     void revoke() override;
@@ -39,7 +39,8 @@ public:
     QStringList newDirs;
 
 private:
-    QStringList *patterns;
+    QStringList patterns;
+    QString filtedLabels;
 
     QString dirStandard(QFileInfo &dirInfo);
     int fileStandard(const QStringList &files);
@@ -49,12 +50,12 @@ private:
     QString haveTranslators(QString &name);
     QString ifLowQuality(QString &name, QString path);
     QStringList readInfo(const QString &name);
-
-    float stringSimilar(const QString &strA,const QString &strB);
+    double stringSimilar(const QString &strA,const QString &strB);
     void parodyMap(QString &parody);
-
     QString join(QStringList &component);
     QString &stringReplacement2(QString &name);
+    QString &labelStorage(QString &name, QString label);
+    QString &labelStorage(QString &name, QRegExp rx);
 
 signals:
     void setProgressBarValue(int value);

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1275</width>
-    <height>834</height>
+    <height>862</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
    <property name="acceptDrops">
     <bool>true</bool>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,1">
+   <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -204,7 +204,7 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>200</height>
+               <height>240</height>
               </size>
              </property>
              <property name="font">
@@ -237,7 +237,7 @@
                   <enum>QFrame::Plain</enum>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;按以下标准格式重新修改同人志文件名&lt;/p&gt;&lt;p&gt;原作映射：アイドルマスター -&amp;gt; THE IDOLM@STER&lt;/p&gt;&lt;p&gt;序号优化：1.jpg -&amp;gt; 001.jpg&lt;/p&gt;&lt;p&gt;特别标示：未知译者★：带有[中国翻訳]且缺失[译者] &lt;/p&gt;&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;低质图像▼：图像短边小于阈值&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;按以下标准格式重新修改同人志文件名&lt;/p&gt;&lt;p&gt;标示过滤：去掉 [中国語]、[無修正] 等标示&lt;/p&gt;&lt;p&gt;原作映射：アイドルマスター -&amp;gt; THE IDOLM@STER&lt;/p&gt;&lt;p&gt;序号优化：1.jpg -&amp;gt; 001.jpg&lt;/p&gt;&lt;p&gt;特别标示：未知译者★：带有[中国翻訳]且缺失[译者] &lt;/p&gt;&lt;p&gt;     低质图像▼：图像短边小于阈值&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="textFormat">
                   <enum>Qt::AutoText</enum>
@@ -262,6 +262,16 @@
                    </property>
                    <property name="text">
                     <string>撤销</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBox_5">
+                   <property name="text">
+                    <string>标示过滤</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>

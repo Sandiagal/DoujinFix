@@ -27,7 +27,7 @@
 
 namespace LogType
 {
-    enum LogTypeEnum {OKLOG,ERRORLOG,IGNORELOG,NAMELOG,INDEXLOG,REPLACELOG,WARNINGLOG};
+enum LogTypeEnum {OKLOG, ERRORLOG, IGNORELOG, NAMELOG, INDEXLOG, REPLACELOG, WARNINGLOG};
 }
 
 class LogListModel : public QAbstractListModel

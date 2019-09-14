@@ -27,7 +27,7 @@
 Standardiser::Standardiser(Setting *setting, QObject *parent):
     BaseFile(setting,parent)
 {
-    patterns= new QStringList{
+    patterns = QStringList{
             "\\(.+\\)\\[.+\\(.+\\)\\].*\\(.+\\)\\[.+\\]",
             "\\[.+\\]\\(.+\\)\\[.+\\(.+\\)\\].*\\(.+\\)",
             "\\[.+\\(.+\\)\\].*\\(.+\\)\\[.+\\]",
@@ -63,40 +63,41 @@ void Standardiser::start()
     emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (`·Д·)シ 开始名称标准化 ━━━━━━━━━━┓"),LogType::OKLOG);
     originDirs.clear();
     newDirs.clear();
-    int successDir=0;
+    int successDir = 0;
     
     if (setting->INDEX_FIX) {
         oldFilesDirs.clear();
         newFilesDirs.clear();
     }
-    int successFileCnt=0;
-    int successDirFileCnt=0;
+    int successFileCnt = 0;
+    int successDirFileCnt = 0;
     
-    QStringList dirs=loadDirs(setting->ORIGIN_PATH);
-    for(int i=0;i<dirs.length();
-        i++,emit setProgressBarValue(100*i/dirs.length())){
+    QStringList dirs = loadDirs(setting->ORIGIN_PATH);
+    for (int i = 0; i < dirs.length();
+         i++, emit setProgressBarValue(100 * i / dirs.length())) {
         QThread::msleep(setting->PROCESS_DELAY);
-        
+        if (!setting->LABEL_FILTER) filtedLabels.clear();
+
         QFileInfo dirInfo(dirs.at(i));
         
         QString standardResult = dirStandard(dirInfo);
-        if(standardResult!=dirInfo.absoluteFilePath())
-            successDir+=1;
+        if (standardResult != dirInfo.absoluteFilePath())
+            successDir += 1;
         
         if (setting->INDEX_FIX) {
-            QStringList files=loadFiles(standardResult);
-            int successCnt=fileStandard(files);
-            successFileCnt+=successCnt;
-            if(successCnt>0)
-                successDirFileCnt+=1;
+            QStringList files = loadFiles(standardResult);
+            int successCnt = fileStandard(files);
+            successFileCnt += successCnt;
+            if(successCnt > 0)
+                successDirFileCnt += 1;
         }
     }
     
-    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 名称标准化成功 ━━━━━━━━━━┛")
+    QString log = QString::fromLocal8Bit("┗━━━━━━━━━━ ( `·Д·)ゞ %1 / %2 名称标准化成功 ━━━━━━━━━━┛")
             .arg(successDir).arg(dirs.length());
     if (setting->INDEX_FIX) {
-        log+=QString::fromLocal8Bit("\n%3┗━━━━━  %1 / %2 序号标准化成功 ━━━━━┛")
-                .arg(successFileCnt).arg(successDirFileCnt).arg(QString().fill(' '),27);
+        log += QString::fromLocal8Bit("\n%3┗━━━━━  %1 / %2 序号标准化成功 ━━━━━┛")
+                .arg(successFileCnt).arg(successDirFileCnt).arg(QString().fill(' '), 27);
     }
     emit writeLog(log,LogType::OKLOG);
 }
@@ -104,48 +105,46 @@ void Standardiser::start()
 void Standardiser::revoke()
 {
     emit writeLog(QString::fromLocal8Bit("┏━━━━━━━━━━ (‘_ゝ`) 撤销名称标准化 ━━━━━━━━━━┓"),LogType::OKLOG);
-    int dirCnt=0;
-    int successDirCnt=0;
-    int fileCnt=0;
+    int dirCnt = 0;
+    int successDirCnt = 0;
+    int fileCnt = 0;
     QString filelog;
-    int successFileCnts=0;
-    int successDirFileCnt=0;
-    for (int i=0;i<originDirs.length();
-         i++,emit setProgressBarValue(100*i/originDirs.length())){
+    int successFileCnts = 0;
+    int successDirFileCnt = 0;
+    for (int i = 0; i < originDirs.length();
+         i++, emit setProgressBarValue(100 * i / originDirs.length())){
         QThread::msleep(setting->PROCESS_DELAY);
         
         if (setting->INDEX_FIX){
-            
-            int successFileCnt=0;
-            filelog="";
-            for (int j=0;j<oldFilesDirs.at(i).length();j++) {
-                
-                if(newFilesDirs.at(i).at(j).size()>0){
+            int successFileCnt = 0;
+            filelog = "";
+            for (int j = 0; j < oldFilesDirs.at(i).length(); j++) {
+                if(newFilesDirs.at(i).at(j).size() > 0){
                     fileCnt++;
                     QString originFile(oldFilesDirs.at(i).at(j));
                     QString targetFile(newFilesDirs.at(i).at(j));
-                    emit showMessage(targetFile.section("/",-2,-1));
+                    emit showMessage(targetFile.section("/", -2, -1));
                     try {
-                        qDebug()<< targetFile << "----->" << originFile;
+                        qDebug() << targetFile << "----->" << originFile;
                         QFile::rename(targetFile, originFile);
                         successFileCnt++;
                     } catch (std::exception &e) {
-                        qDebug()<<e.what();
-                        qDebug()<<"index stand filed:" << targetFile;
+                        qDebug() << e.what();
+                        qDebug() << "index stand filed:" << targetFile;
                     }
                 }
             }
-            if(successFileCnt>0){
-                successDirFileCnt+=1;
-                successFileCnts+=successFileCnt;
+            if (successFileCnt > 0){
+                successDirFileCnt += 1;
+                successFileCnts += successFileCnt;
                 filelog = QString::fromLocal8Bit("%3\n           ┗━ %1 / %2 序号撤销成功")
                         .arg(successFileCnt).arg(fileCnt).arg(QFileInfo(originDirs[i]).fileName());
             }
         }
         
-        if(newDirs[i].size()>0){
+        if(newDirs[i].size() > 0){
             dirCnt++;
-            emit showMessage(newDirs[i].section("/",-1));
+            emit showMessage(newDirs[i].section("/", -1));
             try {
                 QFile::rename(newDirs[i], originDirs[i]);
                 successDirCnt++;
@@ -155,8 +154,8 @@ void Standardiser::revoke()
                               LogType::NAMELOG,
                               QFileInfo(originDirs[i]).absoluteFilePath());
             } catch (std::exception &e) {
-                qDebug()<<e.what();
-                qDebug()<<"rename filed:"<<QFileInfo(newDirs[i]).fileName();
+                qDebug() << e.what();
+                qDebug() << "rename filed:"<<QFileInfo(newDirs[i]).fileName();
                 emit writeLog(QString::fromLocal8Bit("撤销失败\n%1")
                               .arg(QFileInfo(newDirs[i]).fileName()),
                               LogType::ERRORLOG,
@@ -164,16 +163,16 @@ void Standardiser::revoke()
             }
         }
         
-        if (setting->INDEX_FIX&&filelog.size()>0){
-            emit writeLog(filelog,LogType::INDEXLOG,QFileInfo(originDirs[i]).absoluteFilePath());
+        if (setting->INDEX_FIX && filelog.size() > 0){
+            emit writeLog(filelog, LogType::INDEXLOG, QFileInfo(originDirs[i]).absoluteFilePath());
         }
         
     }
-    QString log=QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2  命名标准化撤销成功 ━━━━━━━━━━┛")
+    QString log = QString::fromLocal8Bit("┗━━━━━━━━━━ (‘_ゝ`) %1 / %2  命名标准化撤销成功 ━━━━━━━━━━┛")
             .arg(successDirCnt).arg(dirCnt);
     if (setting->INDEX_FIX)
-        log+=QString::fromLocal8Bit("\n%3┗━━━━━ %1 / %2 序号撤销成功 ━━━━━┛")
-                .arg(successFileCnts).arg(successDirFileCnt).arg(QString().fill(' '),33);
+        log += QString::fromLocal8Bit("\n%3┗━━━━━ %1 / %2 序号撤销成功 ━━━━━┛")
+                .arg(successFileCnts).arg(successDirFileCnt).arg(QString().fill(' '), 33);
     emit writeLog(log,LogType::OKLOG);
 }
 
@@ -182,19 +181,14 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
     emit showMessage(dirInfo.fileName());
     
     originDirs.append(dirInfo.absoluteFilePath());
-    QString name=dirInfo.fileName();
+    QString name = dirInfo.fileName();
     stringReplacement(name);
     
     QString special;
-    
-    if(setting->UNKNOWN_TRANSLATOR)
-        special.append(haveTranslators(name));
-    
-    if(setting->LOW_QUALITY)
-        special.append(ifLowQuality(name, dirInfo.absoluteFilePath()));
+    if(setting->UNKNOWN_TRANSLATOR) special.append(haveTranslators(name));
+    if(setting->LOW_QUALITY) special.append(ifLowQuality(name, dirInfo.absoluteFilePath()));
     
     nameAnalysis(name);
-    
     if(!ifvalid(name)){
         newDirs.append("");
         emit writeLog(QString::fromLocal8Bit("命名不合法\n%1")
@@ -205,7 +199,7 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
     }
     
     QStringList component(readInfo(name));
-    if (component.length()==0 || component.back().contains("]")) {
+    if (component.length() == 0 || component.back().contains("]")) {
         newDirs.append("");
         emit writeLog(QString::fromLocal8Bit("命名真奇葩\n%1")
                       .arg(dirInfo.fileName()),
@@ -218,34 +212,35 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
     }
     component.push_front(special);
     
-    QString result=join(component);
-    qDebug() << "Special :"<<component[0];
-    qDebug() << "Convention :"<<component[1];
-    qDebug() << "Circle :"<<component[2];
-    qDebug() << "Artist :"<<component[3];
-    qDebug() << "Title :"<<component[4];
-    qDebug() << "Parody :"<<component[5];
-    qDebug() << "Translators :"<<component[6];
-    
+    QString result = join(component);
+    qDebug() << "Special :" << component[0];
+    qDebug() << "Convention :" << component[1];
+    qDebug() << "Circle :" << component[2];
+    qDebug() << "Artist :" << component[3];
+    qDebug() << "Title :" << component[4];
+    qDebug() << "Parody :" << component[5];
+    qDebug() << "Translators :" << component[6];
+    qDebug() << "Labels :" << filtedLabels;
+
     stringReplacement2(result);
     
-    qDebug() <<"Standardization result:";
+    qDebug() << "Standardization result:";
     qDebug() << result;
     
     QString resultPath = QDir(dirInfo.absolutePath()).filePath(result);
     
-    if (resultPath==dirInfo.absoluteFilePath()) {
+    if (resultPath == dirInfo.absoluteFilePath()) {
         newDirs.append("");
         emit writeLog(QString::fromLocal8Bit("无需修改\n%1")
                       .arg(result),
                       LogType::IGNORELOG,
                       dirInfo.absoluteFilePath());
         return dirInfo.absoluteFilePath();
-    }else {
+    } else {
         try {
             QFile::rename(dirInfo.absoluteFilePath(), resultPath);
             newDirs.append(resultPath);
-            qDebug()<<dirInfo.absoluteFilePath()<<"----->"<<resultPath;
+            qDebug() << dirInfo.absoluteFilePath() << "----->" << resultPath;
             emit writeLog(QString::fromLocal8Bit("标准化成功\n%1     ---------->\n%2")
                           .arg(dirInfo.fileName()).arg(result),
                           LogType::NAMELOG,
@@ -253,8 +248,8 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
             return resultPath;
         } catch (std::exception &e) {
             newDirs.append("");
-            qDebug()<<e.what();
-            qDebug()<<"rename filed";
+            qDebug() << e.what();
+            qDebug() << "rename filed";
             emit writeLog(QString::fromLocal8Bit("重命名失败\n")
                           .arg(dirInfo.fileName()),
                           LogType::ERRORLOG,
@@ -262,25 +257,24 @@ QString Standardiser::dirStandard(QFileInfo &dirInfo)
             return dirInfo.absoluteFilePath();
         }
     }
-    return dirInfo.absoluteFilePath();
 }
 
 int Standardiser::fileStandard(const QStringList &files)
 {
-    int compressCnt=0;
-    int warningCnt=0;
+    int compressCnt = 0;
+    int warningCnt = 0;
     QStringList oldFiles;
     QStringList newFiles;
     QString lastName;
-    for(int i=0;i<files.length();i++){
+    for(int i = 0; i < files.length(); i++){
         
         QFileInfo originFile(files[i]);
-        emit showMessage(originFile.absoluteFilePath().section("/",-2,-1));
+        emit showMessage(originFile.absoluteFilePath().section("/", -2, -1));
         
         QString targetBaseName(originFile.baseName());
         if (targetBaseName.contains("__ver")) {
-            int lastIndex = lastName.section("_",-1).toInt();
-            targetBaseName = lastName.section("_",0,2) + "_" +QString::number(lastIndex+1) ;
+            int lastIndex = lastName.section("_", -1).toInt();
+            targetBaseName = lastName.section("_", 0, 2) + "_" + QString::number(lastIndex + 1) ;
         }
         targetBaseName.replace("(", "");
         targetBaseName.replace(")", "");
@@ -321,34 +315,34 @@ int Standardiser::fileStandard(const QStringList &files)
         }
         
         lastName = targetBaseName;
-        targetBaseName+="."+originFile.suffix().toLower();
+        targetBaseName += "."+originFile.suffix().toLower();
         QString targetFilePath(originFile.absoluteDir().filePath(targetBaseName));
         
-        if (targetFilePath!=originFile.absoluteFilePath()) {
-            qDebug() << originFile.absoluteFilePath()<<"----->"<<targetFilePath;
+        if (targetFilePath != originFile.absoluteFilePath()) {
+            qDebug() << originFile.absoluteFilePath() << "----->" << targetFilePath;
             try {
                 QFile::rename(originFile.absoluteFilePath(), targetFilePath);
                 compressCnt++;
                 newFiles.append(targetFilePath);
             } catch (std::exception &e) {
                 newFiles.append("");
-                qDebug()<<e.what();
-                qDebug()<<"rename filed";
+                qDebug() << e.what();
+                qDebug() << "rename filed";
             }
             oldFiles.append(originFile.absoluteFilePath());
         }
     }
     
-    if (oldFiles.length()>0 || warningCnt>0) {
+    if (oldFiles.length() > 0 || warningCnt > 0) {
         QString log;
-        int logType=4;
-        if(oldFiles.length()>0){
+        int logType = 4;
+        if (oldFiles.length() > 0){
             log += QString::fromLocal8Bit("┗━ %1 / %2 序号修改成功")
                     .arg(compressCnt).arg(files.length());
             logType = LogType::INDEXLOG;
         }
-        if (warningCnt>0) {
-            if(!log.isEmpty()){
+        if (warningCnt > 0) {
+            if (!log.isEmpty()){
                 log.replace(QString::fromLocal8Bit("┗━"),QString::fromLocal8Bit("┣━"));
                 log+="\n           ";
             }
@@ -356,7 +350,7 @@ int Standardiser::fileStandard(const QStringList &files)
                     .arg(warningCnt).arg(files.length());
             logType = LogType::WARNINGLOG;
         }
-        emit writeLog(log,logType,QFileInfo(files[0]).absolutePath());
+        emit writeLog(log, logType,QFileInfo(files[0]).absolutePath());
     }
     
     oldFilesDirs.append(oldFiles);
@@ -369,46 +363,43 @@ QStringList Standardiser::readInfo(const QString &name)
     QStringList result;
     QRegExp rx("^(\\(.*\\))(\\[.*)(\\(.*\\)\\])(.*)(\\(.*\\))(\\[.*\\])$");
     if (rx.exactMatch(name)) {
-        result.append(rx.cap(1).remove(0,1).chopped(1));
-        result.append(rx.cap(2).remove(0,1));
-        result.append(rx.cap(3).remove(0,1).chopped(2));
+        result.append(rx.cap(1).remove(0, 1).chopped(1));
+        result.append(rx.cap(2).remove(0, 1));
+        result.append(rx.cap(3).remove(0, 1).chopped(2));
         result.append(rx.cap(4));
-        result.append(rx.cap(5).remove(0,1).chopped(1));
-        result.append(rx.cap(6).remove(0,1).chopped(1));
+        result.append(rx.cap(5).remove(0, 1).chopped(1));
+        result.append(rx.cap(6).remove(0, 1).chopped(1));
         
-        if (setting->PARODY_MAP) {
+        if (setting->PARODY_MAP && !setting->NAME_MAP->empty()) {
             parodyMap(result[4]);
         }
         
-        result[1].replace(QString::fromLocal8Bit("、"),", ");
-        result[2].replace(QString::fromLocal8Bit("、"),", ");
+        result[1].replace(QString::fromLocal8Bit("、"), ", ");
+        result[2].replace(QString::fromLocal8Bit("、"), ", ");
     }
     
     return result;
 }
 
-float Standardiser::stringSimilar(const QString &strA, const QString &strB)
+double Standardiser::stringSimilar(const QString &strA, const QString &strB)
 {
     int lenA = strA.length();
     int lenB = strB.length();
-    QVector<QVector<int>> d(lenA+1,QVector<int>(lenB+1,0));
-    for(int i=0;i<=lenA;++i)
-        d[i][0] = i;
-    for(int i=0;i<=lenB;++i)
-        d[0][i] = i;
-    for(int i=1;i<=lenA;++i)
-        for(int j=1;j<=lenB;++j)
-            d[i][j] = qMin(qMin(d[i-1][j-1] + (strA[i-1] == strB[j-1] ? 0:1), d[i-1][j]+1), d[i][j-1]+1);
-    return 1-d[lenA][lenB]*1.0/qMax(lenA,lenB);
+    QVector<QVector<int>> d(lenA+1, QVector<int>(lenB + 1, 0));
+    for (int i = 0; i <= lenA; ++i) d[i][0] = i;
+    for (int i = 0; i <= lenB; ++i) d[0][i] = i;
+    for (int i = 1; i <= lenA; ++i)
+        for (int j = 1; j <= lenB; ++j)
+            d[i][j] = qMin(qMin(d[i - 1][j - 1] + (strA[i - 1] == strB[j - 1] ? 0 : 1),
+                    d[i - 1][j] + 1), d[i][j - 1] + 1);
+    return 1 - d[lenA][lenB] * 1.0 / qMax(lenA, lenB);
 }
 
 void Standardiser::parodyMap(QString &parody)
 {
-    if (parody.length()==0) {
-        return;
-    }
-    
-    QVector<float> similarities;
+    if (parody.length() == 0) return;
+
+    QVector<double> similarities;
     QMapIterator<QString, QString> i(*(setting->NAME_MAP));
     while (i.hasNext()) {
         i.next();
@@ -416,16 +407,16 @@ void Standardiser::parodyMap(QString &parody)
         //            qDebug() << similarities.back() << " : " << result[4] << " and "<<i.key();
     }
     
-    int maxIndex = std::max_element(similarities.begin(),similarities.end())-similarities.begin();
-    float maxsimilarity = similarities.at(maxIndex);
-    qDebug()<<QString("%1 O: %2 S: %3 T: %4")
-              .arg(maxsimilarity).arg(parody)
-              .arg((setting->NAME_MAP->begin()+maxIndex).key())
-              .arg((setting->NAME_MAP->begin()+maxIndex).value());
+    int maxIndex = std::max_element(similarities.begin(), similarities.end()) - similarities.begin();
+    double maxsimilarity = similarities.at(maxIndex);
+    qDebug() << QString("%1 O: %2 S: %3 T: %4")
+                .arg(maxsimilarity).arg(parody)
+                .arg((setting->NAME_MAP->begin() + maxIndex).key())
+                .arg((setting->NAME_MAP->begin() + maxIndex).value());
     if (maxsimilarity > 0.5) {
-        QString aim = (setting->NAME_MAP->begin()+maxIndex).value();
+        QString aim = (setting->NAME_MAP->begin() + maxIndex).value();
         if(aim == "Final Fantasy" || aim == "Dragon Quest") {
-            parody.replace((setting->NAME_MAP->begin()+maxIndex).key(), aim+" ");
+            parody.replace((setting->NAME_MAP->begin() + maxIndex).key(), aim + " ");
         } else {
             parody = aim;
         }
@@ -434,10 +425,9 @@ void Standardiser::parodyMap(QString &parody)
 
 QString &Standardiser::nameAnalysis(QString &name)
 {
-    for(int i=0;i<patterns->length();i++){
-        if (QRegExp(patterns->at(i)).exactMatch(name)) {
-            
-            int format=0;
+    for (int i = 0; i < patterns.length(); i++){
+        if (QRegExp(patterns[i]).exactMatch(name)) {
+            int format = 0;
             // 根据匹配的格式，添加缺失的格式符号
             switch (i) {
             case 0:
@@ -447,19 +437,19 @@ QString &Standardiser::nameAnalysis(QString &name)
                 format = 2;
                 break;
             case 2:
-                name.insert(name.indexOf("["),"()");
+                name.insert(name.indexOf("["), "()");
                 format = 1;
                 break;
             case 3:
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.lastIndexOf("["), "()");
                 format = 1;
                 break;
             case 4:
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.indexOf("]"), "()");
                 format = 1;
                 break;
             case 5:
-                name.insert(name.indexOf("]")+1,"()");
+                name.insert(name.indexOf("]") + 1, "()");
                 format = 2;
                 break;
             case 6:
@@ -467,44 +457,44 @@ QString &Standardiser::nameAnalysis(QString &name)
                 format = 2;
                 break;
             case 7:
-                name.insert(name.indexOf("]",name.indexOf("]")+1),"()");
+                name.insert(name.indexOf("]", name.indexOf("]") + 1), "()");
                 format = 2;
                 break;
             case 8:
                 format = 3;
                 break;
             case 9:
-                name.insert(name.indexOf("["),"()");
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.indexOf("["), "()");
+                name.insert(name.lastIndexOf("["), "()");
                 format = 1;
                 break;
             case 10:
-                name.insert(name.indexOf("["),"()");
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.indexOf("["), "()");
+                name.insert(name.indexOf("]"), "()");
                 format = 1;
                 break;
             case 11:
-                name.insert(name.indexOf("]"),"()");
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.indexOf("]"), "()");
+                name.insert(name.lastIndexOf("["), "()");
                 format = 1;
                 break;
             case 12:
-                name.insert(name.indexOf("]")+1,"()");
+                name.insert(name.indexOf("]") + 1, "()");
                 name.append("()");
                 format = 2;
                 break;
             case 13:
-                name.insert(name.indexOf("]",name.indexOf("]")+1),"()");
+                name.insert(name.indexOf("]", name.indexOf("]") + 1), "()");
                 name.append("()");
                 format = 2;
                 break;
             case 14:
-                name.insert(name.indexOf("]")+1,"()");
-                name.insert(name.indexOf("]",name.indexOf("]")+1),"()");
+                name.insert(name.indexOf("]") + 1, "()");
+                name.insert(name.indexOf("]",name.indexOf("]") + 1), "()");
                 format = 2;
                 break;
             case 15:
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.lastIndexOf("["), "()");
                 format = 3;
                 break;
             case 16:
@@ -512,42 +502,42 @@ QString &Standardiser::nameAnalysis(QString &name)
                 format = 3;
                 break;
             case 17:
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.indexOf("]"), "()");
                 format = 3;
                 break;
             case 18:
-                name.insert(name.indexOf("["),"()");
-                name.insert(name.indexOf("]"),"()");
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.indexOf("["), "()");
+                name.insert(name.indexOf("]"), "()");
+                name.insert(name.lastIndexOf("["), "()");
                 format = 1;
                 break;
             case 19:
-                name.insert(name.indexOf("]")+1,"()");
-                name.insert(name.indexOf("]",name.indexOf("]")+1),"()");
+                name.insert(name.indexOf("]") + 1, "()");
+                name.insert(name.indexOf("]", name.indexOf("]") + 1), "()");
                 name.append("()");
                 format = 2;
                 break;
             case 20:
-                name.insert(name.lastIndexOf("["),"()");
+                name.insert(name.lastIndexOf("["), "()");
                 name.append("()");
                 format = 3;
                 break;
             case 21:
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.indexOf("]"), "()");
                 name.append("()");
                 format = 3;
                 break;
             case 22:
-                name.insert(name.lastIndexOf("["),"()");
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.lastIndexOf("["), "()");
+                name.insert(name.indexOf("]"), "()");
                 format = 3;
                 break;
             case 23:
                 format = 4;
                 break;
             case 24:
-                name.insert(name.lastIndexOf("["),"()");
-                name.insert(name.indexOf("]"),"()");
+                name.insert(name.lastIndexOf("["), "()");
+                name.insert(name.indexOf("]"), "()");
                 name.append("()");
                 format = 3;
                 break;
@@ -572,7 +562,7 @@ QString &Standardiser::nameAnalysis(QString &name)
                         .arg(i).arg(format).arg(name);
             // 进一步修改符号调整为标准格式
             if (format == 4) {
-                name.insert(name.indexOf(")")+1,"[()]");
+                name.insert(name.indexOf(")") + 1, "[()]");
                 format = 3;
             }
             if (format == 3) {
@@ -580,14 +570,35 @@ QString &Standardiser::nameAnalysis(QString &name)
                 format = 1;
             }
             if (format == 2) {
-                QString temp = name.left(name.indexOf("]")+1);
-                name = name.mid(name.indexOf("]")+1)+temp;
+                QString temp = name.left(name.indexOf("]") + 1);
+                name = name.mid(name.indexOf("]") + 1) + temp;
                 format = 1;
             }
             qDebug() << "Regular expression 2:";
             qDebug() << name;
             break;
         }
+    }
+    return name;
+}
+
+QString &Standardiser::labelStorage(QString &name, QString label)
+{
+    if (name.contains(label)) {
+        if (!setting->LABEL_FILTER) filtedLabels += " " + label;
+        name.replace(label, "");
+    }
+    return name;
+}
+
+QString &Standardiser::labelStorage(QString &name, QRegExp rx)
+{
+    if (name.contains(rx)) {
+        if (!setting->LABEL_FILTER) {
+            rx.indexIn(name);
+            filtedLabels.push_front(" " + rx.cap(0));
+        }
+        name.replace(rx, "");
     }
     return name;
 }
@@ -607,15 +618,7 @@ QString &Standardiser::stringReplacement(QString &name)
     name.replace(" (", "(");
     name.replace(") ", ")");
     name.replace(QString::fromLocal8Bit("！"), "!");
-    name.replace(QString::fromLocal8Bit("[DL版]"), "");
-    name.replace(QString::fromLocal8Bit("[Digital]"), "");
-    name.replace(QString::fromLocal8Bit("[無修正]"), "");
-    name.replace(QString::fromLocal8Bit("[无修正]"), "");
     name.replace(QString::fromLocal8Bit("(無修正)"), "");
-    name.replace(QString::fromLocal8Bit("[中文]"), "");
-    name.replace(QString::fromLocal8Bit("[中国語]"), "");
-    name.replace(QString::fromLocal8Bit("[中國語]"), "");
-    name.replace(QString::fromLocal8Bit("[全彩]"), "");
     name.replace(QString::fromLocal8Bit("(オリジナル)"), "");
     name.replace(QString::fromLocal8Bit("(Original)"), "");
     name.replace("(Various)", QString::fromLocal8Bit("(よろず)"));
@@ -629,8 +632,18 @@ QString &Standardiser::stringReplacement(QString &name)
     name.replace(QString::fromLocal8Bit("空気系★汉化"), QString::fromLocal8Bit("空気系☆漢化"));
     name.replace(QString::fromLocal8Bit("空気系汉化"), QString::fromLocal8Bit("空気系☆漢化"));
     name.replace(QString::fromLocal8Bit("空気系漢化"), QString::fromLocal8Bit("空気系☆漢化"));
-    name.replace(QRegExp("\\[MJK-\\d+-T\\d+\\]"), "");
-    name.replace(QRegExp("\\[CE_\\d+\\]"), "");
+
+    labelStorage(name, QString::fromLocal8Bit("[中文]"));
+    labelStorage(name, QString::fromLocal8Bit("[中国語]"));
+    labelStorage(name, QString::fromLocal8Bit("[中國語]"));
+    labelStorage(name, QString::fromLocal8Bit("[無修正]"));
+    labelStorage(name, QString::fromLocal8Bit("[无修正]"));
+    labelStorage(name, QString::fromLocal8Bit("[DL版]"));
+    labelStorage(name, QString::fromLocal8Bit("[Digital]"));
+    labelStorage(name, QString::fromLocal8Bit("[全彩]"));
+    labelStorage(name, QRegExp("\\[MJK-\\d+-[A-Z]?\\d+\\]"));
+    labelStorage(name, QRegExp("\\[CE_\\d+\\]"));
+
     name.replace("()", "");
     name.replace("[]", "");
     name = name.trimmed();
@@ -641,75 +654,67 @@ QString &Standardiser::stringReplacement(QString &name)
 
 bool Standardiser::ifvalid(QString &name)
 {
-    int smallBlock=0;
-    int middleBlock=0;
+    int smallBlock = 0;
+    int middleBlock = 0;
     for (QChar c : name) {
-        if(c=='(') smallBlock++;
-        if(c==')') smallBlock--;
-        if(c=='[') middleBlock++;
-        if(c==']') middleBlock--;
-        if(smallBlock<0||1<smallBlock||middleBlock<0||1<middleBlock) return false;
+        if (c == '(') smallBlock++;
+        if (c == ')') smallBlock--;
+        if (c == '[') middleBlock++;
+        if (c == ']') middleBlock--;
+        if (smallBlock < 0 || 1 < smallBlock || middleBlock < 0 || 1 < middleBlock) return false;
     }
     return true;
 }
 
 QString Standardiser::haveTranslators(QString &name)
 {
-    bool noTranslators=false;
+    bool noTranslators = false;
     if (name.contains(QString::fromLocal8Bit("[中国翻訳]"))) {
+        if (!setting->LABEL_FILTER)
+            filtedLabels.push_front(" " + QString::fromLocal8Bit("[中国翻訳]"));
         name.replace(QString::fromLocal8Bit("[中国翻訳]"), "");
         noTranslators = true;
     }
     if (name.contains("[Chinese]")) {
+        if (!setting->LABEL_FILTER) filtedLabels.push_front(" [Chinese]");
         name.replace("[Chinese]", "");
         noTranslators = true;
     }
-    int idx=name.section("[",0,0).indexOf(QString::fromLocal8Bit("★"));
-    if (idx>-1){
-        name.remove(idx,1);
+    int idx=name.section("[", 0, 0).indexOf(QString::fromLocal8Bit("★"));
+    if (idx > -1){
+        name.remove(idx, 1);
         return QString::fromLocal8Bit("★");
     }
     
-    if (noTranslators == true){
-        return QString::fromLocal8Bit("★");
-    }
+    if (noTranslators == true) return QString::fromLocal8Bit("★");
     return "";
 }
 
 QString Standardiser::ifLowQuality(QString &name, QString path)
 {
-    int idx=name.section("[",0,0).indexOf(QString::fromLocal8Bit("▼"));
-    if (idx>-1){
-        name.remove(idx,1);
+    int idx=name.section("[", 0, 0).indexOf(QString::fromLocal8Bit("▼"));
+    if (idx > -1){
+        name.remove(idx, 1);
         return QString::fromLocal8Bit("▼");
     }
     
-    QStringList files=loadFiles(path);
-    int fileCnt=0;
-    int lowCnt=0;
-    for(int i=2;i<files.length() && i<7;i++){
-        emit showMessage(files.at(i).section("/",-2,-1));
+    QStringList files = loadFiles(path);
+    int fileCnt = 0;
+    int lowCnt = 0;
+    for (int i = 2; i < files.length() && i < 7; i++){
+        emit showMessage(files.at(i).section("/", -2, -1));
         
         fileCnt++;
         QImageReader reader(files.at(i));
         QSize sizeOfImage = reader.size();
-        if (sizeOfImage.width()<1) {
-            return "";
-        }
+        if (sizeOfImage.width() < 1) return "";
         
-        qDebug() << sizeOfImage.width()<<"----->"<<path;
+        qDebug() << sizeOfImage.width() << "----->" << path;
         
-        if (sizeOfImage.width()<setting->WIDTH_THRESHOLD) {
-            lowCnt++;
-        }
-        if(fileCnt > 2 && fileCnt - lowCnt > 2){
-            return "";
-        }
-        if(fileCnt > 2 && lowCnt > 2){
-            return QString::fromLocal8Bit("▼");
-        }
+        if (sizeOfImage.width() < setting->WIDTH_THRESHOLD) lowCnt++;
+        if (fileCnt > 2 && fileCnt - lowCnt > 2) return "";
+        if (fileCnt > 2 && lowCnt > 2)  return QString::fromLocal8Bit("▼");
     }
-    
     return "";
 }
 
@@ -734,6 +739,7 @@ QString Standardiser::join(QStringList &component)
     default:
         break;
     }
+    if (!setting->LABEL_FILTER) result += filtedLabels;
     return result;
 }
 
